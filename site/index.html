@@ -68,6 +68,12 @@
   .pen figcaption { text-align: center; color: var(--dim); font-size: 13px; margin-top: 4px; }
   figure { margin: 0; }
 
+  /* the calendar and the first reel, side by side (one column on a phone) */
+  .calreel { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; }
+  .calreel .doors { max-width: none; }
+  .film.big { max-width: none; }
+  #started h2 { font-size: clamp(20px, 3vw, 26px); }
+  @media (max-width: 820px) { .calreel { grid-template-columns: minmax(0, 1fr); } .calreel .film.tall { margin: 0 auto; } }
   /* the doors */
   .doors { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 760px; }
   @media (max-width: 560px) { .doors { grid-template-columns: repeat(5, 1fr); gap: 6px; } }
@@ -146,33 +152,33 @@
   </div>
 </section>
 
-<section class="alt" id="doors">
+<section class="alt" id="watch">
   <div class="wrap">
-    <h2>Thirty <span>doors</span>. Knock on a few.</h2>
+    <h2>The <span>trailer</span></h2>
+    <div class="film big" id="trailer" style="padding:0"><video controls playsinline preload="metadata" poster="media/trailer-poster.jpg" src="media/trailer.mp4"></video></div>
+    <p class="dim" style="margin-top:10px">In a world where walking and biking are not fun, and Pelotons lie broken and covered in laundry, one man had a vision.</p>
+  </div>
+</section>
+
+<section id="doors">
+  <div class="wrap calreel">
+    <div>
+      <h2>Thirty <span>doors</span>. Knock on a few.</h2>
     <p>One opens every day you walk or ride. Behind them: a turkey, tools, trail buddies, a flying relative, weather, and a cake. The gold ones are open for a peek. The rest are a surprise.</p>
     <div class="doors" id="doorgrid"></div>
     <div id="doormsg" role="status"></div>
+    </div>
+    <div id="started">
+      <h2>Where it <span>started</span></h2>
+      <div class="film tall" id="reel"><video controls playsinline preload="metadata" poster="media/reel-poster.jpg" src="media/reel.mp4"></video></div>
+      <p class="dim" style="margin-top:10px">Video one.</p>
+    </div>
   </div>
 </section>
 <dialog id="peek" aria-label="A door on the advent calendar, opening">
   <canvas id="peekcanvas" role="img" aria-label="The door knocks, swings open, and something pops out. Tap to carry on."></canvas>
 </dialog>
 
-<section id="watch">
-  <div class="wrap">
-    <h2>Watch</h2>
-    <div class="two">
-      <div>
-        <div class="film" id="trailer" style="padding:0"><video controls playsinline preload="metadata" poster="media/trailer-poster.jpg" src="media/trailer.mp4"></video></div>
-        <p class="dim" style="margin-top:10px">In a world where walking and biking are not fun, and Pelotons lie broken and covered in laundry, one man had a vision.</p>
-      </div>
-      <div>
-        <div class="film tall" id="reel"><video controls playsinline preload="metadata" poster="media/reel-poster.jpg" src="media/reel.mp4"></video></div>
-        <p class="dim" style="margin-top:10px">Where it started: video one.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="alt" id="play">
   <div class="wrap">
