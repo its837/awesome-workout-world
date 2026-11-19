@@ -1,0 +1,42 @@
+# NOT SWITCHED ON. This is the recipe for publishing the website from GitHub itself. To use it,
+# copy it to .github/workflows/site.yml. GitHub only accepts that from a login that has been
+# given the "workflow" permission (gh auth refresh -s workflow).
+#
+# The website: site/ with the game itself beside it at play/, so it can be played in a
+# browser and so the tablets can fetch game updates from the same place.
+# It only runs once the repository is public (GitHub's free pages need that).
+name: Website
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', 'web/**', '.github/workflows/site.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publish:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Put the site and the game together
+        run: |
+          mkdir -p _site
+          cp -R site/. _site/
+          cp -R web _site/play
+          # a family that is nobody's: the starter one (see docs/INSTALL.md), if the real one is not in the repository
+          [ -f _site/play/profiles.js ] || cp web/profiles.sample.js _site/play/profiles.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

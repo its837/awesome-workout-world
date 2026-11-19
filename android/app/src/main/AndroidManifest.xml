@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- INTERNET is only for loading the game from the Mac during development (see README). -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Never used to draw over anything. Android 10 only lets an app that holds this step
+         back in front by itself, which is how we come back after Peloton's set-up screen has
+         covered us during a sleep. It is OFF until the owner switches it on for one tablet:
+         tools/android.sh front yes   (and "front no" takes it away again). -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Declared by other apps that read the bike's sensors; harmless where it does not exist. -->
+    <uses-permission android:name="onepeloton.permission.ACCESS_SENSOR_SERVICE" />
+
+    <!-- Android 11+ hides other packages unless we say which ones we talk to. -->
+    <queries>
+        <package android:name="com.onepeloton.affernetservice" />
+        <package android:name="com.peloton.service.SensorData" />
+        <!-- the ALL APPS page: every app that has an icon to open (this covers YouTube and Netflix too) -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <!-- so we can find, and return to, the tablet's original home screen -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
+        <!-- so Santa can speak: the tablet's speech engine, if it has one (Android 11 hides it otherwise) -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.MerryMiles"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|uiMode"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          The home-screen entry point. Switched off until someone turns on "home screen" in
+          our Settings, so installing the app never changes what the tablet's Home button does.
+          (It has to be switched on from inside the app: adb is not allowed to on Android 10+.)
+        -->
+        <activity-alias
+            android:name=".HomeAlias"
+            android:enabled="false"
+            android:exported="true"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- The way out: a plain screen that works even when the game does not. -->
+        <activity
+            android:name=".RescueActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|uiMode"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape" />
+
+        <!-- Full-screen web viewer used when a streaming service's own app is not installed. -->
+        <activity
+            android:name=".WatchActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|uiMode"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape" />
+    </application>
+</manifest>

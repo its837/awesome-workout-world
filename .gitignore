@@ -1,0 +1,33 @@
+# --- Private: these never leave this Mac and Google Drive ---------------------------
+# The key every build of the tablet app is signed with (android/signing/README.md).
+android/signing/
+# Each tablet's serial number and the record of how Peloton left it.
+docs/tablets/*
+!docs/tablets/WHAT_WORKS.md
+# The family's rides, copied off the tablets before each install.
+backups/
+# The raw notes behind reports/ (long quotes from other people's posts, with their device numbers in them).
+research_notes/
+# Screenshots taken with the real family on the screen. (Pictures for the docs and the website are
+# taken with the starter family: tools/site-shots.sh.)
+docs/screens/
+docs/detail-levels/
+site/img/walk.png
+site/img/apps.png
+# Claude's own working notes for the next session (names the family).
+HANDOFF.md
+
+# --- Leftovers ---------------------------------------------------------------------
+.DS_Store
+*.apk
+node_modules/
+# The real family (people, dogs, the calendar, the relatives). Never in the repository.
+family/
+
+# the website, built by tools/build-site.mjs
+_site/
+
+# photos of the family (web/photos/): never published
+web/photos/*
+!web/photos/.gitkeep
+
