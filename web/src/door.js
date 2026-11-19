@@ -2,7 +2,7 @@
 //
 // One show, used everywhere a door opens: mid-ride when your minute is up (ride.js), again
 // on your own calendar when you tap a door you have already opened (home.js), from the
-// TEST drawer, and in the studio (Trail & advent), which draws it with this same code.
+// TEST drawer.
 //
 //   0.0   the card drops in: a big door with the date in its wreath
 //   0.45  knock, knock, knock (the door shakes)
@@ -42,7 +42,7 @@ export function doorBox() {
 
 /**
  * The card for door n. season: camp.js. profile: whose door it is (may be null).
- * ids: what is behind it, if not what the saved calendar says (the studio passes its own).
+ * ids: what is behind it, if not what the saved calendar says .
  */
 /** A greeting of your own for a day of the year (`days` in family.js: 'MM-DD': 'HAPPY BIRTHDAY, SOMEBODY!'). */
 const yourDay = (m, d) => String((FAMILY.days || {})[`${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`] || '').toUpperCase();
@@ -223,8 +223,7 @@ function bubble(ctx, text, x, y, maxW, chars, up) {
 }
 
 /**
- * THE BIG CARD: the show in the middle of the screen, everything else dimmed. The studio
- * uses this one. time: any running clock, for the little movements.
+ * THE BIG CARD: the show in the middle of the screen, everything else dimmed. time: any running clock, for the little movements.
  */
 export function drawDoor(ctx, c, profiles, time) {
   const t = c.t, b = doorBox(), info = c.info;

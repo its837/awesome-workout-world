@@ -44,7 +44,7 @@ class App {
     // Is anybody here? (restCheck() below.) A touch or a key counts, and so does the machine moving.
     this.busyAt = Date.now();     // when somebody last did something
     this.seenAt = Date.now();     // when the last frame was drawn: a long gap means the tablet slept, or another app was in front
-    this.staged = window.top !== window;   // inside the studio, the reel or the trailer: never tidied away
+    this.staged = window.top !== window;   // inside a frame: never tidied away
     const busy = () => { this.busyAt = Date.now(); };
     addEventListener('pointerdown', busy, true);
     addEventListener('keydown', busy, true);
@@ -96,7 +96,7 @@ class App {
 
     this.screen = null;
     this.note = null;   // a short message shown at the bottom of any screen
-    // preview=1 (used by the studio): show everything with a pretend family history,
+    // preview=1: show everything with a pretend family history,
     // without saving a thing. Nothing done in a preview touches the real ride log.
     if (new URLSearchParams(location.search).get('preview') === '1') {
       this.preview = true;
@@ -174,7 +174,7 @@ class App {
    *   bench=1              run the speed test straight away
    *   day=+12              pretend it is that many days from now
    *   demo=1               fill in a pretend family history (tents on the map)
-   *   preview=1            the same, but nothing is saved (the studio's live previews use this)
+   *   preview=1            the same, but nothing is saved
    *   plain=1              no test controls at all, for anybody
    *   test=1               a ride with the TEST button, whoever is riding
    *   empty=1              leave the rider out of the picture (a bare trail, for trying new art on)

@@ -27,9 +27,9 @@
 //   somebody who turns up     a Visitor of their own (visitor.js; santa.js and edward.js are two),
 //   to cheer you on           a line in FANS in ride.js, and an entry in SIGHTS made with fan()
 //   something you earn        an entry in EARNED below
-// ...and then, for an advent thing, put its id in DOOR_GIFTS (or pick it for a door in the
-// studio). Nothing else needs to change: the calendar, the ride, your own calendar screen
-// and the studio all read this catalog.
+// ...and then, for an advent thing, put its id in DOOR_GIFTS (or list it for a door in
+// tweaks.js). Nothing else needs to change: the calendar, the ride and your own calendar screen
+// all read this catalog.
 //
 // Every thing can also carry:
 //   quip   the funny line its door says when it opens (door.js draws the opening)
@@ -55,7 +55,7 @@ import { EDWARD, EDWARD_SAYS, edwardSprite } from './edward.js';
 
 // The calendar: what is behind each door, door 1 (the first day of the season) first.
 // The last door, on Christmas Day, is always HOME. The dates are for a season that starts
-// on Thanksgiving 2026. The studio can change the order (it is saved as TWEAKS.doors).
+// on Thanksgiving 2026. tweaks.js can change the order (TWEAKS.doors).
 //
 // A DOOR CAN HOLD MORE THAN ONE THING: write a list, ['penguin', 'flurry']. The first is
 // the one pictured on the door. So there is always room for another thing, and adding one
@@ -221,7 +221,7 @@ export function joinGiftOf(profile, profiles) {
 }
 
 const listAt = (entry) => (Array.isArray(entry) ? entry : [entry]);
-/** The calendar, first door first (the studio's version if there is one). An entry is one thing's id, or a list of them. */
+/** The calendar, first door first (the order in tweaks.js if there is one). An entry is one thing's id, or a list of them. */
 export function doorList() {
   return Array.isArray(TWEAKS.doors) && TWEAKS.doors.length ? TWEAKS.doors : DOOR_GIFTS;
 }
@@ -239,8 +239,7 @@ function canon(id, profiles) {
 }
 
 /**
- * Every advent thing there is: [{ id, set, name, blurb, ... }]. The studio's pickers use
- * it, and a ride walks it to bring each thing in or hold it out.
+ * Every advent thing there is: [{ id, set, name, blurb, ... }]. A ride walks it to bring each thing in or hold it out.
  * profile: whose ride or door it is (a dog does not visit itself).
  */
 export function allGifts(profiles, profile) {

@@ -22,9 +22,9 @@ export const ZONES = [
   { name: 'TUNNEL OF LIGHTS', short: 'TUNNEL', color: '#c77dff', arch: 3, front: 0.4, mid: 0.55, back: 0.6, wall: 0.85, bush: 0.05, lit: 0.45, snowman: 0.01, deer: 0, drift: 0.03 },
   { name: 'SNOW GHOST RIDGE', short: 'RIDGE', color: '#8fa3d6', kinds: [['ghost', 1]], rocky: true, wand: 5, front: 0.32, mid: 0.4, back: 0.3, wall: 0.1, bush: 0.3, lit: 0, snowman: 0.01, deer: 0.004, drift: 0.25 },
 ];
-/** The landscapes as built in, before any studio changes (the studio's "reset" goes back to these). */
+/** The landscapes as built in, before any changes (a reset goes back to these). */
 export const ZONE_DEFAULTS = ZONES.map((z) => Object.assign({}, z));
-// Changes made in the studio (names, map colours, how many trees, lights, snowmen...), laid over the above.
+// Changes made in tweaks.js (names, map colours, how many trees, lights, snowmen...), laid over the above.
 if (TWEAKS.places) ZONES.forEach((z, i) => { if (TWEAKS.places[i]) Object.assign(z, TWEAKS.places[i]); });
 // The order you travel through them (then it repeats).
 export const SEQUENCE = [0, 1, 5, 2, 6, 0, 7, 3, 8, 4];

@@ -33,7 +33,7 @@ const build = (mine) => {
     speak: mine.speak || says.charAt(0) + says.slice(1).toLowerCase(),     // the same words for the tablet's voice: 'How ya goin?'
   };
 };
-// ?public=1 (the trailer's game frame, or anything else that will be shown outside the family): a
+// ?public=1 (anything that will be shown outside the family): a
 // made-up relative in place of the family's own, so no real name is on a video anyone can see.
 const PUBLIC = typeof location !== 'undefined' && new URLSearchParams(location.search).get('public') === '1';
 const AUNT_BETTY = { name: 'AUNT BETTY', title: 'THE SPIRIT OF AUNT BETTY', says: 'OH, HELLO, DEARIE! DID YOU EAT?', jacket: [232, 150, 190], look: { hair: [246, 246, 252], style: 'bob' } };

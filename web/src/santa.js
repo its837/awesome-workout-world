@@ -1,8 +1,7 @@
 // SEXY SANTA.
 //
 // Santa, as nobody asked to see him: chubby, in a red bikini with a belt of gold coins,
-// belly dancing. He is the same Santa as in the reel (studio/reel/shots.js, santaDance):
-// if you change how one looks, change the other to match.
+// belly dancing. He is drawn here, in the game's own pixels.
 //
 // Late in the season his door opens, and from then on he turns up now and then to cheer
 // you on: you catch him up on the trail, where he is dancing along backwards so that he
@@ -36,13 +35,13 @@ const WHO = {
 };
 
 const BOX_W = 1.6, BOX_H = 2.0;      // his picture, in metres (his feet are 0.05 from the bottom)
-const U = 0.0105;                    // one pixel of the reel's drawing, in metres: he comes out about 1.85 m to the top of his hat
+const U = 0.0105;                    // one pixel of the drawing, in metres: he comes out about 1.85 m to the top of his hat
 export const SANTA_FRAMES = 24;      // pictures in one round of the dance (two sways of the hips; his arms take the whole round to swap)
 const SK = [240, 180, 140], SKD = [216, 148, 108], RED = [216, 52, 60], REDD = [160, 32, 48], WH = [246, 248, 255], GOLD = [255, 215, 106], BOOTS = [23, 23, 29];
 
 /**
  * Paint him into a BOX_W x BOX_H picture. beat: where he is in the dance, in radians (the
- * hips go round once every 2 pi). The numbers are the reel's, in its pixels: x to the
+ * hips go round once every 2 pi). The numbers are in drawing pixels: x to the
  * right of his middle, y DOWN from his feet (so everything above the ground is negative).
  */
 function paint(p, beat) {

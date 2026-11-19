@@ -140,7 +140,7 @@ export class Season {
       if (r.open != null ? !r.open : !(r.min >= 1)) continue;
       const n = this.doorOf(r.day);
       unlocked = Math.max(unlocked, n);
-      if (r.demo) open = Math.max(open, n);        // (the studio's pretend history: everybody opened their doors)
+      if (r.demo) open = Math.max(open, n);        // (the pretend history: everybody opened their doors)
     }
     for (const o of this.store.opens || []) if (o.who === id && o.day >= startKey && o.start === startKey) open = Math.max(open, o.n);
     unlocked = Math.min(unlocked, today);
@@ -302,7 +302,7 @@ export class Season {
       .sort((a, b) => b.pos - a.pos);
   }
 
-  // --- pretend histories (workshop and studio) -----------------------------
+  // --- pretend histories (workshop) -----------------------------
   /** Workshop: open the trail early if need be, then invent a family history. */
   pretend() {
     if (!this.started()) this.store.settings.seasonStart = dayKey(addDays(this.now(), -9));

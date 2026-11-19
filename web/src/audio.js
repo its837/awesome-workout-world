@@ -98,7 +98,7 @@ export class Sound {
     this.nextTime = 0;
     this.playing = false;
     this.tempoScale = 1;
-    this.tempoMin = 0.8; this.tempoMax = 1.25;   // how far tempoScale may push a song (the reel recorder widens this)
+    this.tempoMin = 0.8; this.tempoMax = 1.25;   // how far tempoScale may push a song
     this.musicOn = true;
     this.muted = false;
     this.loud = 1;

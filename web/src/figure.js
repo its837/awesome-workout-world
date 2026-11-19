@@ -2,7 +2,7 @@
 //
 // On the trail you only ever see your rider from behind (rider.js). These views are for
 // everywhere else: the line-up on the front page, where everybody stands at their real
-// height, and the character sheets in the studio (http://localhost:5173/studio/).
+// height, and the character sheets.
 //
 // Everything is described in metres with the feet at (0, 0) and y going up, then
 // scaled by the person's height: a look of { height: 183 } is 183 cm from the snow to

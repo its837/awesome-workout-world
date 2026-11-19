@@ -3,7 +3,7 @@ import { daysToChristmas } from './util.js';
 import { TWEAKS } from '../tweaks.js';
 
 // The thing the family is doing together. The name and the line under it can be changed
-// in the studio (saved as TWEAKS.event). goalMiles 0 means "a mile a day each".
+// in tweaks.js (TWEAKS.event). goalMiles 0 means "a mile a day each".
 export const EVENT = Object.assign({
   name: 'THE MERRY MILE-A-THON',
   tagline: 'A MILE A DAY, THANKSGIVING TO CHRISTMAS. LET\'S ALL GET HOME TOGETHER.',
