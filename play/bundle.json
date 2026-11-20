@@ -1,0 +1,262 @@
+{
+ "name": "merry-miles",
+ "version": "0.11.0",
+ "build": 1795134073,
+ "files": [
+  {
+   "path": "family.js",
+   "sha256": "74e99c61522c92590c826c53db895d4bb042f803f245e93cce2a5b1acdcfb58a",
+   "size": 1973
+  },
+  {
+   "path": "index.html",
+   "sha256": "967cd9263fcb06be0f1f922e2c7db4190f6a0da3cc013b4aa543ce1d1b3f9a11",
+   "size": 382
+  },
+  {
+   "path": "profiles.js",
+   "sha256": "b69ac51c8cfa0d3248b9c92077bab49d6eef4ba9278dd962414aa0ac7708cc00",
+   "size": 4221
+  },
+  {
+   "path": "src/advent.js",
+   "sha256": "60bbf257118302bf0f38d6782ceba58b09e16812da24765dff1af8bd0d75e9e6",
+   "size": 6340
+  },
+  {
+   "path": "src/apps.js",
+   "sha256": "19ca302f50ed70f258641cec540e680cff6ddb6d597293120edf49d5983256a2",
+   "size": 4917
+  },
+  {
+   "path": "src/audio.js",
+   "sha256": "fb391ec83a450c8fdc54c50ceb92c9aa50427efada3cc35efc80aa89dcf49cad",
+   "size": 43282
+  },
+  {
+   "path": "src/bench.js",
+   "sha256": "69d8a0003e23d54c795e248c12d5351eb780b026cdc6e6e3c02af96823f3f292",
+   "size": 7613
+  },
+  {
+   "path": "src/buddies.js",
+   "sha256": "85081d717d8e560692615f9b7e1b9cc575eeef6e7d02c9757d4ecc6d04e19397",
+   "size": 15591
+  },
+  {
+   "path": "src/camp.js",
+   "sha256": "8b15427beb5ccd5f29afe74df213f97032c8c4d9d3dea3e100b904d7cc587732",
+   "size": 18916
+  },
+  {
+   "path": "src/carols.js",
+   "sha256": "f5c7db7d13c1f5fd0756bc70049754ec3c3a3f1c7ea42e79a734f51527cc85a6",
+   "size": 16688
+  },
+  {
+   "path": "src/chrome.js",
+   "sha256": "4bfa5a39f49aefcf074c9f7f34b9d19b6f8b7cc87b8ac1a2bec4f5e64e4a0632",
+   "size": 1363
+  },
+  {
+   "path": "src/config.js",
+   "sha256": "f59bec8b8532c4f43a9939091928037586098e5b152227016144df69dd1f3b9d",
+   "size": 1727
+  },
+  {
+   "path": "src/detail.js",
+   "sha256": "9f6634ef84903e77efa2c299a160aeb48fe0cadbf6da9988b7945df24631b729",
+   "size": 7551
+  },
+  {
+   "path": "src/device.js",
+   "sha256": "ff669aea5ed02784f4747e9064fcf62e4fb90428760a56ae65df4bf3b27596a8",
+   "size": 6210
+  },
+  {
+   "path": "src/dogs.js",
+   "sha256": "0e70f0e294acc140bfc6bf11f035a97a18777f491a6cb38258020a9af54ac6fd",
+   "size": 19345
+  },
+  {
+   "path": "src/door.js",
+   "sha256": "e43efc874b054ba1955057b42bf9663f0984232a316c4027e05aff48cf7c82eb",
+   "size": 18596
+  },
+  {
+   "path": "src/edward.js",
+   "sha256": "ed29b26ad08ac38a74bacf94c8d287a217dc9d5e2ebf60ad8858df95f6ac5b46",
+   "size": 9400
+  },
+  {
+   "path": "src/env.js",
+   "sha256": "197f2f2d5c3d38755a80e4b4106ab65bcf7d9fbaff3545ed092d0087fa63c535",
+   "size": 1908
+  },
+  {
+   "path": "src/figure.js",
+   "sha256": "ad24b0203ee484d84eff951a4c0ee5783d3354fd6686bbb8248ce63e24eea221",
+   "size": 27344
+  },
+  {
+   "path": "src/font.js",
+   "sha256": "abe0f7aca2862df31294fa50ffe3c85cdbd93096f65b495c01d620338ee3be31",
+   "size": 6415
+  },
+  {
+   "path": "src/gifts.js",
+   "sha256": "1df4c8365a33195906be6f048c399cb708d124cd206d2bda2b18c65f5e0b91ff",
+   "size": 30482
+  },
+  {
+   "path": "src/home.js",
+   "sha256": "9cc23e88f33621b199ce340894c3b225252b09627d4aa69a9c9b97cbc4ab855c",
+   "size": 26270
+  },
+  {
+   "path": "src/launcher.js",
+   "sha256": "3dbb577a9288116fb11dce513bc1b12e8c7954af13f37712ad54b3b0051aea2d",
+   "size": 15108
+  },
+  {
+   "path": "src/machine.js",
+   "sha256": "4acb589927320619e20b73976efdc4254dbc06ee490e10335c4529baa8f2b6f4",
+   "size": 6551
+  },
+  {
+   "path": "src/main.js",
+   "sha256": "acdc0bebe61dc86a8a2e3b48d428c36b4b4a2aa97a79f9dc24d5b37c6114e3ff",
+   "size": 22043
+  },
+  {
+   "path": "src/mapscreen.js",
+   "sha256": "a8dcf452ae4f3c58142ebc689c71d3437dd78bd72b999956bc6390aba8be9c5f",
+   "size": 7052
+  },
+  {
+   "path": "src/milk.js",
+   "sha256": "ea3684f803ba07e1dc8dd0d558ed7611de8d6012931239cabb6504004c01b186",
+   "size": 4948
+  },
+  {
+   "path": "src/picture.js",
+   "sha256": "e4eb177a55139bc470c35621db5cad404f50e7bf9ab8281e027afe589b6edc83",
+   "size": 2113
+  },
+  {
+   "path": "src/portraits.js",
+   "sha256": "be1df02de255676eaeb3253adf636f8ca931b09c150736e6c2e8a58430fe7e8b",
+   "size": 15552
+  },
+  {
+   "path": "src/relative.js",
+   "sha256": "4106b030d94a00eac152808d79aa2e770dfe4367897b77e8ee9d2cb80ca582b9",
+   "size": 12869
+  },
+  {
+   "path": "src/retro.js",
+   "sha256": "ef75052eef8bf5dd28a985bbb002fe458b2bba09a466a0e291d48989b63e28a1",
+   "size": 11244
+  },
+  {
+   "path": "src/rewards.js",
+   "sha256": "e2dfe28b0d88cfd448a5a2fc0ac6cba07d497a2ba89aa4f73550b63150adfe9a",
+   "size": 27053
+  },
+  {
+   "path": "src/ride.js",
+   "sha256": "944b5d205b666391ff7d0621b3cc139ce2fdf652c42df76df5208aaa5940ff21",
+   "size": 84111
+  },
+  {
+   "path": "src/rider.js",
+   "sha256": "52bae238689744e20cb8e724f1a7e06108451261099ecd8936504b8713e9d07b",
+   "size": 18500
+  },
+  {
+   "path": "src/santa.js",
+   "sha256": "4949b005cb8e029f3b81227538934a1ae64eb72d0caee8e777afb36e5c9e2a13",
+   "size": 7424
+  },
+  {
+   "path": "src/session.js",
+   "sha256": "e3f08be3d49afb5ca82394a7069c2b3aed8f3d55551aafe7d7d282f134bbb68e",
+   "size": 9460
+  },
+  {
+   "path": "src/settings.js",
+   "sha256": "7845b2631a7680f55e2c3b870a7ff8714b86e0594b6b538edb242d3ef02c7417",
+   "size": 4463
+  },
+  {
+   "path": "src/sky.js",
+   "sha256": "3d593ecdb1196409a8727eed9cef567ffa50597b8146603292ee37159259b9e1",
+   "size": 13651
+  },
+  {
+   "path": "src/snow.js",
+   "sha256": "59ec4aee5c4c564403d93f1b65ed8f4936ffdc0d56f459bd51c05d19caca54a2",
+   "size": 2808
+  },
+  {
+   "path": "src/sprites.js",
+   "sha256": "0b2a6f7fe6b73a0bea970ff1eda08f2beeb588c9cc15c7b7c5b8dcea4bccec1b",
+   "size": 41403
+  },
+  {
+   "path": "src/summary.js",
+   "sha256": "d80ee3f0258cfd6751ecf31250f1623049855aecd52e7f8119c1309703062fbb",
+   "size": 4501
+  },
+  {
+   "path": "src/text.js",
+   "sha256": "a77f9e552340a6826db0e86f498e6e7d57a7786c6131496cb69c104ade5a7999",
+   "size": 3334
+  },
+  {
+   "path": "src/tools.js",
+   "sha256": "09c155b1bb7f0d9134636ee55436771aaf6587ce2a9283ba42d420fb58cf52c7",
+   "size": 18765
+  },
+  {
+   "path": "src/ui.js",
+   "sha256": "c4e7f1eadaf32447d5fafb52c9c83fbc222869ceafbc9732e477a46493c90890",
+   "size": 4957
+  },
+  {
+   "path": "src/util.js",
+   "sha256": "6c6945d91b390a3215433804a258161eae54964263d4921360ea68dae9011c19",
+   "size": 3175
+  },
+  {
+   "path": "src/visitor.js",
+   "sha256": "2beda0be3020360267758f5bab97078303c1e2a8493c796d94fbe059aad72729",
+   "size": 7233
+  },
+  {
+   "path": "src/volume.js",
+   "sha256": "9297d5f008b67fa04924a30efff37aa972e417417f007e7b6dc23f6b81f02c34",
+   "size": 2270
+  },
+  {
+   "path": "src/workshop.js",
+   "sha256": "a756278e9b0984de0a4921da6a4d913b1db791fbb215026ca173d39e89c8b753",
+   "size": 13461
+  },
+  {
+   "path": "src/world.js",
+   "sha256": "94be7b3ee1129bd25591b3a2bcd30c4e7706cd0745e94e3791623c21f9e8fdf5",
+   "size": 30291
+  },
+  {
+   "path": "styles.css",
+   "sha256": "1e96b20ba2271211462bdae36169d8c0552389097ef7054b388d008fa2241225",
+   "size": 511
+  },
+  {
+   "path": "tweaks.js",
+   "sha256": "b2d40bdf252205c056d0e4968521c051deb698fc820381bf5f424b6157f33cdf",
+   "size": 466
+  }
+ ]
+}
