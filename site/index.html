@@ -113,6 +113,18 @@
   .more div { background: var(--panel); border: 3px solid var(--cyan); padding: 12px 14px; font-size: 15px; }
   .more b { color: var(--cyan); display: block; }
   .paths .btn { margin-top: 4px; }
+  /* the trailer looks like a video: a dark picture with a play button, and it says PLAY TRAILER when you point at it */
+  #trailer { position: relative; overflow: hidden; }
+  .playcard { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; cursor: pointer; font: inherit; color: #fff;
+              background: linear-gradient(rgba(6, 2, 18, 0.30), rgba(6, 2, 18, 0.42)); display: grid; place-items: center; place-content: center; gap: 14px; transition: background 0.2s; }
+  .playcard:hover, .playcard:focus-visible { background: linear-gradient(rgba(6, 2, 18, 0.12), rgba(6, 2, 18, 0.30)); outline: none; }
+  .playcard .disc { width: clamp(64px, 11vw, 124px); aspect-ratio: 1; border-radius: 50%; border: 4px solid #fff; background: rgba(0, 0, 0, 0.55); display: grid; place-items: center; transition: transform 0.2s, background 0.2s; }
+  .playcard .tri { width: 0; height: 0; border-style: solid; border-width: clamp(12px, 2.2vw, 24px) 0 clamp(12px, 2.2vw, 24px) clamp(20px, 3.7vw, 40px); border-color: transparent transparent transparent #fff; margin-left: 8%; }
+  .playcard .lbl { font-weight: 700; letter-spacing: 0.22em; font-size: clamp(13px, 2vw, 20px); color: #fff7c2; text-shadow: 0 2px 0 #6a0d00, 0 0 18px rgba(255, 120, 30, 0.7); opacity: 0; transform: translateY(6px); transition: opacity 0.2s, transform 0.2s; }
+  .playcard:hover .lbl, .playcard:focus-visible .lbl { opacity: 1; transform: none; }
+  .playcard:hover .disc, .playcard:focus-visible .disc { transform: scale(1.08); background: rgba(255, 63, 208, 0.65); }
+  @media (hover: none) { .playcard .lbl { opacity: 1; transform: none; } }
+  #trailer.started .playcard { display: none; }
 </style>
 </head>
 <body>
@@ -155,7 +167,10 @@
 <section class="alt" id="watch">
   <div class="wrap">
     <h2>The <span>trailer</span></h2>
-    <div class="film big" id="trailer" style="padding:0"><video controls playsinline preload="metadata" poster="media/trailer-poster.jpg" src="media/trailer.mp4"></video></div>
+    <div class="film big" id="trailer" style="padding:0">
+      <video playsinline preload="metadata" poster="media/trailer-poster.jpg" src="media/trailer.mp4" aria-label="The trailer"></video>
+      <button type="button" class="playcard" id="playtrailer" title="Play trailer" aria-label="Play trailer"><span class="disc"><span class="tri"></span></span><span class="lbl">PLAY TRAILER</span></button>
+    </div>
     <p class="dim" style="margin-top:10px">In a world where walking and biking are not fun, and Pelotons lie broken and covered in laundry, one man had a vision.</p>
   </div>
 </section>
@@ -382,6 +397,15 @@
   bike.addEventListener('click', function () { pick('bike'); });
   pick('bike');
 })();
+</script>
+<script>
+  // the trailer: press the picture and it plays (with its controls); when it ends the play button comes back
+  (function () {
+    var box = document.getElementById('trailer'), v = box && box.querySelector('video'), b = document.getElementById('playtrailer');
+    if (!v || !b) return;
+    b.addEventListener('click', function () { box.classList.add('started'); v.controls = true; v.play(); });
+    v.addEventListener('ended', function () { v.controls = false; box.classList.remove('started'); v.currentTime = 0; });
+  })();
 </script>
 <script type="module" src="penguin.js"></script>
 <script type="module" src="doors.js"></script>

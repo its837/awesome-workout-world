@@ -3,6 +3,8 @@
 A home screen and a Christmas walking and riding game for a family's Peloton Bike and Tread. Not made by, approved by, or
 known to Peloton.
 
+[![Play trailer: Awesome Workout World](site/media/trailer-poster-play.jpg "Play trailer")](https://its837.github.io/awesome-workout-world/#trailer "Play trailer")
+
 > **Point your Claude here, plug shit in, and go nuts. Good luck. It might break!**
 >
 > This is made to be set up *with an AI*. Read
@@ -26,7 +28,7 @@ known to Peloton.
 - **Put it on a Peloton:** [docs/INSTALL.md](docs/INSTALL.md). Two ways: *side by side*
   (one more app; Peloton untouched) or *full takeover* (the tablet starts up into it).
 - **What has been tried on which machine:** [docs/BIKE_AND_TREADMILL.md](docs/BIKE_AND_TREADMILL.md).
-- **The website:** `site/` (look at it with `node tools/site.mjs`; not published yet).
+- **The website:** [its837.github.io/awesome-workout-world](https://its837.github.io/awesome-workout-world/) (the trailer, the advent calendar, and the game to try). The files are in `site/`; look at it yourself with `node tools/site.mjs`.
 
 - **Awesome Workout World** is the tablet's home page. It is not about riding: it is the
   front door to everything on the device. The apps (the riding game and ALL APPS for
