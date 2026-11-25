@@ -20,7 +20,7 @@ import { Session, STAGE_METERS } from './session.js';
 import { envAt } from './env.js';
 import { drawPortrait, lookOf } from './portraits.js';
 import { coatOf } from './dogs.js';
-import { giftInfo, giftIcon, gatedGifts, allGifts, hooksOf, EARNED, earnedFor } from './gifts.js';
+import { giftInfo, giftIcon, gatedGifts, allGifts, hooksOf, EARNED, earnedFor, isFor } from './gifts.js';
 import { RelativeVisit, RELATIVE } from './relative.js';
 import { SantaVisit } from './santa.js';
 import { EdwardVisit } from './edward.js';
@@ -206,6 +206,7 @@ export class RideScreen {
     this.sparks = [];            // fireworks
     this.fwLeft = 0; this.fwNext = 0;
     for (const t of allGifts(app.profiles, profile)) {
+      if (!isFor(t, profile)) continue;                       // (somebody else's present)
       const hk = hooksOf(t);
       if (this.has(t.id)) { if (hk.start) hk.start(this, t); } else if (hk.hold) hk.hold(this, t);
     }
@@ -371,6 +372,7 @@ export class RideScreen {
    */
   give(info, quiet) {
     this.unlocked.add(info.id);
+    if (!isFor(info, this.profile)) return;                     // (somebody else's present)
     const open = hooksOf(info).open;
     if (open) open(this, info, quiet);
   }

@@ -1,5 +1,6 @@
 // One workout's numbers, plus the little bit of saved history per family member.
 import { clamp, MILE } from './util.js';
+import { FAMILY } from '../family.js';
 
 const KEY = 'merrymiles.v2';
 
@@ -15,6 +16,9 @@ const DEFAULT_SETTINGS = {
   unlockAll: false,    // test controls: pretend every door is open, for everybody
   dev: false,          // show the workshop tools on real hardware too
   seasonStart: '',     // '' = Thanksgiving Day; or a 'YYYY-MM-DD' to open the trail early
+  // ONLY IN THE SEASON: until the trail opens (and after Christmas) the home screen counts the days, nobody is on it and nobody
+  // can ride. Off unless the family asks for it (`seasonOnly: true` in family.js); each tablet can still switch it in Settings.
+  seasonLock: FAMILY.seasonOnly === true,
   dayOffset: 0,        // workshop time travel, in days
   detail: 'auto',      // picture detail: auto | full | medium | light | custom (see detail.js)
   autoLevel: 'medium', // where AUTO last settled on this tablet

@@ -39,6 +39,8 @@ export const REWARDS = {
   penguinmilk: { set: 'feast', advent: true, name: 'PENGUIN MILK', tag: 'PENGUIN MILK', blurb: 'FRESH FROM THE PENGUIN', say: 'GLUG!', quip: 'DO NOT ASK HOW.', wait: MILK.done },
   // A cake, the day before Christmas. If that is somebody's birthday in your house, give it their
   // name and their own words: `things` in family.js (gifts.js lays those over this catalog).
+  // A birthday cake for a present (`presents` and `things` in family.js give it a day and a person). It is the same cake.
+  birthdaycake: { set: 'feast', advent: true, present: true, name: 'BIRTHDAY CAKE', tag: 'BIRTHDAY', blurb: 'MAKE A WISH', say: 'YUM!', quip: 'MAKE A WISH. A LOUD ONE.', speak: 'Happy birthday!' },
   cake: { set: 'feast', advent: true, name: 'CHRISTMAS EVE CAKE', tag: 'CAKE', blurb: 'ONE MORE SLEEP', say: 'YUM!', quip: 'SAVE ME A SLICE!', speak: 'Cake!' },
 };
 // Cookies and sparkle last for the ride you pick them on. (Advent things are kept for good.)
@@ -472,3 +474,4 @@ export function artCanvas(id, res, ph = 0.6) {
   frames.set(key, c);
   return c;
 }
+ART.birthdaycake = ART.cake;   // (the birthday cake is the same cake)

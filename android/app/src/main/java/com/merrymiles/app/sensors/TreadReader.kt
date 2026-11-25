@@ -50,7 +50,11 @@ internal class TreadQuestions(private val binder: IBinder) {
     companion object {
         const val INTERFACE = SensorSources.ACTION_TREAD
         /** Versions of Peloton's sensor service whose numbering we have read for ourselves. */
-        val CHECKED_VERSIONS = setOf("3.3.6")
+        // 3.3.6: read on 17 November 2026. 3.4.1: Peloton updated the service on 18 November; read the same way on 24 November 2026
+        // (the APK was copied off our treadmill and its interface read, nothing was sent to it): question 17 leads to H.g.g(), whose own
+        // log text is "getCurrentSpeed", and 18 to H.g.e(), "getCurrentIncline"; each takes nothing and answers with one int
+        // (16 is getMcb0InclineAdc and 19 getTargetSpeed, so the table lines up). The interface name is unchanged.
+        val CHECKED_VERSIONS = setOf("3.3.6", "3.4.1")
     }
 }
 

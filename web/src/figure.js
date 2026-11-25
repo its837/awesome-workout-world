@@ -22,6 +22,59 @@ const MOUTH = [150, 60, 60], FRAME = [40, 34, 44], LENS = [206, 228, 246];
 export const dark = (c, f = 0.72) => [c[0] * f, c[1] * f, c[2] * f];
 export const lite = (c, f = 1.25, a = 12) => c.map((v) => Math.min(255, v * f + a));
 const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+/** What covers the body: a jacket, or (look.shirtless) nothing but skin. */
+const topOf = (K) => (K.shirtless ? K.skin : K.jacket);
+const SAUNA = [226, 212, 176];       // a felt sauna hat
+const WIZ = [58, 48, 132], WIZ_D = [40, 32, 94], GOLD = [250, 214, 80];   // a wizard hat
+const SLED = [214, 52, 58], SLED_D = [150, 34, 42], BLANKET = [88, 140, 224], BLANKET_D = [60, 106, 188], BABY_HAT = [250, 214, 84], BABY_HAT_D = [224, 176, 50];
+
+/**
+ * A baby in a little red sled, strapped upright to somebody's back (look.babySled). (x, y) is the middle of the sled,
+ * in the metres of whoever's tools g are. view:
+ *   'face'  the baby looks at you: you are behind the carrier (the trail view)
+ *   'away'  you are in front of the carrier: you see the sled's edges and the back of the baby's hat over a shoulder
+ *   'side'  in profile, the baby looking back (the carrier faces right)
+ */
+export function babySled(g, x, y, view, skin, hair = [34, 30, 36], w = 0) {
+  const { R, E, L, PG } = g, sway = 0.012 * Math.sin(w), lip = [150, 60, 60];
+  if (view === 'side') {
+    R(x - 0.05, y - 0.38, 0.09, 0.78, SLED_D);                              // the board, standing against his back
+    R(x - 0.1, y - 0.38, 0.05, 0.78, SLED);
+    L(x - 0.145, y - 0.4, x - 0.145, y + 0.38, 0.035, METAL);               // the runner, and its curl
+    E(x - 0.145, y + 0.4, 0.045, 0.04, METAL);
+    E(x - 0.22, y - 0.1, 0.1, 0.2, BLANKET);                                // the baby in its blanket
+    R(x - 0.31, y - 0.15, 0.06, 0.04, BLANKET_D);
+    E(x - 0.25, y + 0.2, 0.095, 0.1, skin);                                 // its head, turned to look back
+    E(x - 0.23, y + 0.29, 0.1, 0.06, BABY_HAT); R(x - 0.34, y + 0.235, 0.2, 0.03, BABY_HAT_D); E(x - 0.21, y + 0.375, 0.032, 0.032, C.white);
+    R(x - 0.335, y + 0.185, 0.022, 0.03, C.coal);                           // an eye
+    R(x - 0.315, y + 0.12, 0.03, 0.012, lip);
+    return;
+  }
+  if (view === 'away') {
+    R(x - 0.32, y - 0.5, 0.64, 1.0, SLED_D);                                // the board, behind his back and wider than his shoulders
+    R(x - 0.29, y - 0.47, 0.58, 0.94, SLED);
+    R(x - 0.365, y - 0.52, 0.045, 1.1, METAL); R(x + 0.32, y - 0.52, 0.045, 1.1, METAL);   // the runners
+    E(x - 0.34, y + 0.6, 0.045, 0.04, METAL); E(x + 0.34, y + 0.6, 0.045, 0.04, METAL);
+    E(x + 0.2 + sway, y + 0.52, 0.11, 0.105, hair);                         // the back of the baby's head, over his right shoulder
+    E(x + 0.2 + sway, y + 0.6, 0.12, 0.07, BABY_HAT); R(x + 0.08 + sway, y + 0.53, 0.24, 0.035, BABY_HAT_D); E(x + 0.2 + sway, y + 0.69, 0.04, 0.04, C.white);
+    E(x + 0.33, y + 0.38, 0.04, 0.04, skin);                                // a little hand holding on
+    return;
+  }
+  R(x - 0.27, y - 0.4, 0.54, 0.88, SLED_D);                                 // 'face': the board with the baby on it
+  R(x - 0.24, y - 0.37, 0.48, 0.82, SLED);
+  R(x - 0.315, y - 0.44, 0.045, 0.98, METAL); R(x + 0.27, y - 0.44, 0.045, 0.98, METAL);
+  E(x - 0.29, y + 0.56, 0.045, 0.04, METAL); E(x + 0.29, y + 0.56, 0.045, 0.04, METAL);
+  E(x, y - 0.08, 0.17, 0.26, BLANKET);
+  R(x - 0.17, y - 0.1, 0.34, 0.05, BLANKET_D);
+  E(x - 0.15, y + 0.0, 0.04, 0.04, skin); E(x + 0.15, y + 0.0, 0.04, 0.04, skin);   // little hands
+  E(x + sway, y + 0.2, 0.125, 0.12, skin);                                  // the head
+  PG([x - 0.13 + sway, y + 0.26, x + 0.13 + sway, y + 0.26, x + 0.11 + sway, y + 0.34, x + sway, y + 0.4, x - 0.11 + sway, y + 0.34], BABY_HAT);
+  R(x - 0.135 + sway, y + 0.255, 0.27, 0.035, BABY_HAT_D);
+  E(x + sway, y + 0.42, 0.04, 0.04, C.white);
+  R(x - 0.065 + sway, y + 0.17, 0.03, 0.04, C.coal); R(x + 0.035 + sway, y + 0.17, 0.03, 0.04, C.coal);
+  R(x - 0.105 + sway, y + 0.12, 0.04, 0.025, C.rosy); R(x + 0.065 + sway, y + 0.12, 0.04, 0.025, C.rosy);
+  R(x - 0.025 + sway, y + 0.1, 0.05, 0.015, lip);
+}
 
 /** How wide and tall a face is, by shape. */
 const FACE = { round: [0.132, 0.136], oval: [0.122, 0.142], long: [0.114, 0.15], square: [0.128, 0.142] };
@@ -81,6 +134,21 @@ function hatFront(g, K, hx, hy, rx, w) {
     E(hx, hy + 0.115, rx + 0.03, 0.105, col);
     R(hx - rx - 0.035, hy + 0.045, 2 * rx + 0.07, 0.065, colD);
     E(hx, hy + 0.235, 0.05, 0.05, C.white);
+    return;
+  }
+  if (K.hat === 'sauna') {
+    PG([hx - rx - 0.015, hy + 0.1, hx + rx + 0.015, hy + 0.1, hx + 0.085, hy + 0.24, hx + 0.03, hy + 0.34, hx - 0.03, hy + 0.34, hx - 0.085, hy + 0.24], SAUNA);
+    E(hx + 0.07 + 0.012 * Math.sin(w), hy + 0.33, 0.075, 0.04, SAUNA);                    // the limp tip, flopped over
+    R(hx - rx - 0.04, hy + 0.05, 2 * rx + 0.08, 0.065, dark(SAUNA, 0.8));                   // the turned-up brim
+    return;
+  }
+  if (K.hat === 'wizard') {
+    const f = 0.02 * Math.sin(w);
+    E(hx, hy + 0.085, rx + 0.12, 0.045, WIZ_D);                                           // the wide brim
+    PG([hx - rx, hy + 0.1, hx + rx, hy + 0.1, hx + 0.075, hy + 0.28, hx + 0.1 + f, hy + 0.42, hx + 0.24 + f, hy + 0.45, hx + 0.2 + f, hy + 0.52, hx + 0.02, hy + 0.5, hx - 0.05, hy + 0.36, hx - 0.075, hy + 0.28], WIZ);
+    PG([hx - rx, hy + 0.1, hx - 0.05, hy + 0.1, hx - 0.03, hy + 0.28, hx - 0.075, hy + 0.28], WIZ_D);
+    R(hx - rx, hy + 0.1, 2 * rx, 0.035, GOLD);                                            // the band
+    R(hx + 0.03, hy + 0.22, 0.03, 0.03, GOLD); R(hx - 0.05, hy + 0.3, 0.025, 0.025, [255, 246, 200]); R(hx + 0.07, hy + 0.38, 0.025, 0.025, GOLD);
     return;
   }
   const flop = 0.025 * Math.sin(w);
@@ -182,6 +250,20 @@ function hatSide(g, K, hx, hy, w) {
     E(hx - 0.03, hy + 0.235, 0.05, 0.05, C.white);
     return;
   }
+  if (K.hat === 'sauna') {
+    PG([hx - 0.14, hy + 0.11, hx + 0.13, hy + 0.11, hx + 0.08, hy + 0.26, hx + 0.02, hy + 0.35, hx - 0.06, hy + 0.35, hx - 0.12, hy + 0.24], SAUNA);
+    E(hx + 0.07 + 0.012 * Math.sin(w), hy + 0.34, 0.075, 0.04, SAUNA);
+    R(hx - 0.165, hy + 0.05, 0.32, 0.065, dark(SAUNA, 0.8));
+    return;
+  }
+  if (K.hat === 'wizard') {
+    const f = 0.02 * Math.sin(w);
+    E(hx, hy + 0.085, 0.24, 0.045, WIZ_D);
+    PG([hx - 0.14, hy + 0.1, hx + 0.13, hy + 0.1, hx + 0.06, hy + 0.28, hx - 0.02, hy + 0.42, hx - 0.12 + f, hy + 0.46, hx - 0.2 + f, hy + 0.41, hx - 0.14 + f, hy + 0.54, hx - 0.1, hy + 0.5, hx - 0.1, hy + 0.34, hx - 0.1, hy + 0.24], WIZ);
+    R(hx - 0.14, hy + 0.1, 0.27, 0.035, GOLD);
+    R(hx - 0.02, hy + 0.2, 0.03, 0.03, GOLD); R(hx + 0.04, hy + 0.14, 0.025, 0.025, [255, 246, 200]);
+    return;
+  }
   const flop = 0.03 * Math.sin(w);
   PG([hx - 0.14, hy + 0.11, hx + 0.13, hy + 0.11, hx + 0.06, hy + 0.3, hx - 0.1, hy + 0.36, hx - 0.26, hy + 0.27 + flop, hx - 0.19, hy + 0.2], C.red);
   PG([hx - 0.14, hy + 0.11, hx - 0.02, hy + 0.11, hx - 0.13, hy + 0.27, hx - 0.26, hy + 0.27 + flop, hx - 0.19, hy + 0.2], C.redD);
@@ -253,8 +335,9 @@ function frontStanding(p, cx, ground, K, o) {
   const g = tools(p, cx, ground, K.k), { R, E, L, PG } = g;
   const b = K.b, ski = o.mode === 'tread';
   const s = ski ? Math.sin(o.ph) : 0, bob = ski ? 0.012 * Math.cos(o.ph * 2) : 0;
-  const jacket = K.jacket, jacketD = dark(jacket, 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
-  const glove = K.species === 'frog' ? FROG.skin : GLOVE;
+  const jacket = topOf(K), jacketD = dark(jacket, K.shirtless ? 0.88 : 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
+  const glove = K.species === 'frog' || K.shirtless ? (K.species === 'frog' ? FROG.skin : K.skin) : GLOVE;
+  if (K.babySled) babySled(g, 0, 1.15 + bob, 'away', K.skin, K.hair, o.w);     // behind everything: it is on his back
   const step = (sd) => (ski ? 0.035 * sd * s : 0);       // the forward foot sits a little lower in the picture
   if (ski) {
     // skis, pointing at you
@@ -280,8 +363,11 @@ function frontStanding(p, cx, ground, K, o) {
   PG([-0.215 * b, 0.78 + bob, 0.215 * b, 0.78 + bob, 0.24 * b, 1.4 + bob, -0.24 * b, 1.4 + bob], jacket);
   PG([0.08 * b, 0.78 + bob, 0.215 * b, 0.78 + bob, 0.24 * b, 1.4 + bob, 0.12 * b, 1.4 + bob], jacketD);
   E(0, 1.4 + bob, 0.24 * b, 0.075, jacket);
-  R(-0.215 * b, 0.78 + bob, 0.43 * b, 0.035, jacketD);                            // hem
-  R(-0.012, 0.82 + bob, 0.024, 0.54, jacketD);                                    // the zip
+  if (K.shirtless) { R(-0.012, 1.0 + bob, 0.024, 0.03, dark(jacket, 0.7)); R(-0.2 * b, 1.2 + bob, 0.4 * b, 0.018, dark(jacket, 0.82)); }    // a navel, and the line under the chest
+  else {
+    R(-0.215 * b, 0.78 + bob, 0.43 * b, 0.035, jacketD);                          // hem
+    R(-0.012, 0.82 + bob, 0.024, 0.54, jacketD);                                  // the zip
+  }
   if (ski) {
     for (const sd of [-1, 1]) R(sd * 0.14 * b - 0.027, 0.96 + bob, 0.054, 0.48, PACK);   // pack straps
     R(-0.215 * b, 0.93 + bob, 0.43 * b, 0.05, dark(PACK, 0.8));
@@ -293,8 +379,11 @@ function frontStanding(p, cx, ground, K, o) {
     L(sd * (0.29 * b + (ski ? 0.03 : 0)), 1.16 + bob, hx, hy + 0.04, 0.105, col);
     E(hx, hy, 0.062, 0.062, glove);
   }
-  R(-0.1, 1.41 + bob, 0.2, 0.085, SCARF);
-  L(0.05, 1.44 + bob, 0.1, 1.24 + bob, 0.07, SCARF_D);
+  if (K.shirtless) R(-0.055, 1.38 + bob, 0.11, 0.14, jacketD);                    // a neck
+  else {
+    R(-0.1, 1.41 + bob, 0.2, 0.085, SCARF);
+    L(0.05, 1.44 + bob, 0.1, 1.24 + bob, 0.07, SCARF_D);
+  }
   headFront(g, K, 0, 1.608 + bob, o.w);
 }
 
@@ -303,9 +392,10 @@ function frontBike(p, cx, ground, K, o) {
   const g = tools(p, cx, ground, 1), { R, E, L, PG } = g;
   const k = K.k, b = K.b, ph = o.ph, s = Math.sin(ph), bob = 0.01 * Math.sin(ph * 2);
   const seat = 0.33 + 0.67 * k;
-  const jacket = K.jacket, jacketD = dark(jacket, 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
-  const glove = K.species === 'frog' ? FROG.skin : GLOVE;
+  const jacket = topOf(K), jacketD = dark(jacket, K.shirtless ? 0.88 : 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
+  const glove = K.species === 'frog' || K.shirtless ? (K.species === 'frog' ? FROG.skin : K.skin) : GLOVE;
   const sh = seat + 0.37 * k + bob;                       // shoulder height (leaning forward, so the body looks short)
+  if (K.babySled) babySled(tools(p, cx, ground - seat, k), 0, 0.62, 'away', K.skin, K.hair, o.w);   // on his back, behind him
   // body first: it is behind the handlebars
   PG([-0.18 * b * k, seat - 0.02, 0.18 * b * k, seat - 0.02, 0.24 * b * k, sh, -0.24 * b * k, sh], jacket);
   PG([0.07 * b * k, seat - 0.02, 0.18 * b * k, seat - 0.02, 0.24 * b * k, sh, 0.12 * b * k, sh], jacketD);
@@ -337,7 +427,7 @@ function frontBike(p, cx, ground, K, o) {
     E(sd * 0.39, 1.16, 0.066, 0.062, glove);
   }
   const gb = tools(p, cx, ground - (sh + 0.012), k);
-  gb.R(-0.1, 0.0, 0.2, 0.08, SCARF);
+  gb.R(-0.1, 0.0, 0.2, 0.08, K.shirtless ? jacketD : SCARF);
   headFront(gb, K, 0, 0.2, o.w);
 }
 
@@ -347,8 +437,8 @@ function frontBike(p, cx, ground, K, o) {
 function sideSki(p, cx, ground, K, o) {
   const g = tools(p, cx, ground, K.k), { R, E, L, PG } = g;
   const ph = o.ph, s = Math.sin(ph), bob = 0.014 * Math.cos(ph * 2), b = K.b;
-  const jacket = K.jacket, jacketD = dark(jacket, 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
-  const glove = K.species === 'frog' ? FROG.skin : GLOVE;
+  const jacket = topOf(K), jacketD = dark(jacket, K.shirtless ? 0.88 : 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
+  const glove = K.species === 'frog' || K.shirtless ? (K.species === 'frog' ? FROG.skin : K.skin) : GLOVE;
   const hip = [0, 0.9 + bob], sho = [0.1, 1.4 + bob];
   const limb = (far) => {
     const k = far ? -s : s;                  // + : this leg is forward
@@ -371,15 +461,21 @@ function sideSki(p, cx, ground, K, o) {
     E(hx, hy, 0.062, 0.062, glove);
   };
   limb(true); arm(true);
-  // pack, on the back
-  R(-0.27 * b, 0.98 + bob, 0.2, 0.42, PACK);
-  R(-0.27 * b, 1.3 + bob, 0.2, 0.09, lite(PACK, 1.3, 0));
+  // pack, on the back (or the baby in its sled)
+  if (K.babySled) babySled(g, -0.2 * b - 0.03, 1.2 + bob, 'side', K.skin, K.hair, o.w);
+  else {
+    R(-0.27 * b, 0.98 + bob, 0.2, 0.42, PACK);
+    R(-0.27 * b, 1.3 + bob, 0.2, 0.09, lite(PACK, 1.3, 0));
+  }
   limb(false);
   E(hip[0], hip[1] + 0.02, 0.15 * b, 0.11, pants);
   PG([-0.13 * b, 0.88 + bob, 0.14 * b, 0.88 + bob, 0.24 * b, 1.38 + bob, 0.18 * b, 1.46 + bob, -0.06 * b, 1.46 + bob, -0.12 * b, 1.36 + bob], jacket);
   PG([-0.13 * b, 0.88 + bob, -0.03 * b, 0.88 + bob, 0.0, 1.44 + bob, -0.06 * b, 1.46 + bob, -0.12 * b, 1.36 + bob], jacketD);
-  R(0.03, 1.42 + bob, 0.17, 0.085, SCARF);
-  L(0.05, 1.45 + bob, -0.1 - 0.02 * Math.sin(o.w * 2), 1.3 + bob, 0.07, SCARF_D);
+  if (K.shirtless) R(0.04, 1.38 + bob, 0.1, 0.14, jacketD);                       // a neck
+  else {
+    R(0.03, 1.42 + bob, 0.17, 0.085, SCARF);
+    L(0.05, 1.45 + bob, -0.1 - 0.02 * Math.sin(o.w * 2), 1.3 + bob, 0.07, SCARF_D);
+  }
   arm(false);
   headSide(g, K, 0.14, 1.608 + bob, o.w);
 }
@@ -387,8 +483,8 @@ function sideSki(p, cx, ground, K, o) {
 function sideBike(p, cx, ground, K, o) {
   const g = tools(p, cx, ground, 1), { R, E, L, PG, RING } = g;
   const k = K.k, b = K.b, ph = o.ph, bob = 0.008 * Math.sin(ph * 2);
-  const jacket = K.jacket, jacketD = dark(jacket, 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
-  const glove = K.species === 'frog' ? FROG.skin : GLOVE;
+  const jacket = topOf(K), jacketD = dark(jacket, K.shirtless ? 0.88 : 0.7), pants = K.pants, pantsD = dark(pants, 0.74);
+  const glove = K.species === 'frog' || K.shirtless ? (K.species === 'frog' ? FROG.skin : K.skin) : GLOVE;
   const WR = 0.37, rear = [-0.56, WR], front = [0.56, WR], bb = [-0.03, 0.33];
   const seat = 0.33 + 0.67 * k, hip = [-0.24, seat + 0.02 + bob], grip = [0.4, 1.12];
   const sho = [hip[0] + 0.36 * k, hip[1] + 0.42 * k];
@@ -442,13 +538,17 @@ function sideBike(p, cx, ground, K, o) {
   // rider
   E(hip[0], hip[1], 0.16 * b * k, 0.12 * k, pants);
   const tx = sho[0] - hip[0], ty = sho[1] - hip[1], n = Math.hypot(tx, ty), nx = -ty / n, ny = tx / n, hw = 0.135 * b * k;
+  if (K.babySled) babySled(tools(p, cx + hip[0] + tx * 0.5 + nx * 0.34 * k, ground - (hip[1] + ty * 0.62 + ny * 0.34 * k), k), 0, 0, 'side', K.skin, K.hair, o.w);   // hanging on his back
   PG([hip[0] + nx * hw, hip[1] + ny * hw, hip[0] - nx * hw, hip[1] - ny * hw, sho[0] - nx * hw * 0.9, sho[1] - ny * hw * 0.9, sho[0] + nx * hw, sho[1] + ny * hw], jacket);
   PG([hip[0] + nx * hw, hip[1] + ny * hw, hip[0] + nx * hw * 0.35, hip[1] + ny * hw * 0.35, sho[0] + nx * hw * 0.35, sho[1] + ny * hw * 0.35, sho[0] + nx * hw, sho[1] + ny * hw], jacketD);
   E(sho[0], sho[1], 0.13 * b * k, 0.12 * k, jacket);
   leg(false);
   const gb = tools(p, cx + sho[0] + 0.05 * k, ground - (sho[1] + 0.02 * k), k);
-  gb.R(-0.06, 0.02, 0.17, 0.085, SCARF);
-  gb.L(-0.04, 0.05, -0.2 - 0.03 * Math.sin(o.w * 2), -0.02 + 0.02 * Math.cos(o.w), 0.07, SCARF_D);
+  if (K.shirtless) gb.R(-0.02, 0.0, 0.1, 0.1, jacketD);
+  else {
+    gb.R(-0.06, 0.02, 0.17, 0.085, SCARF);
+    gb.L(-0.04, 0.05, -0.2 - 0.03 * Math.sin(o.w * 2), -0.02 + 0.02 * Math.cos(o.w), 0.07, SCARF_D);
+  }
   arm(false);
   headSide(gb, K, 0.06, 0.215, o.w);
 }

@@ -58,7 +58,7 @@ interface SensorSource {
  * Peloton's sensor service. Every machine exposes it at the same package; you bind with an
  * intent whose ACTION is the interface name and whose package is AFFERNET_PACKAGE.
  * (Summary of reports/"Peloton tablet modding methods.md". The Tread part was checked against our
- * own treadmill's copy of the service on 17 November 2026; the bike parts are untested.)
+ * own treadmill's copy of the service on 17 November 2026, and the Bike part against our own bike's on 24 November.)
  *
  *   Bike   -> ACTION_BIKE       register a callback; each frame starts with four longs and two
  *                               ints: rpm, power (centiwatts), two internals, current resistance
@@ -92,13 +92,22 @@ object SensorSources {
      *   Tread: written (TreadReader.kt). Used only when the sensor service on the tablet is
      *          a version whose numbering we have read for ourselves; with any other version
      *          nothing is sent and the game stays on pretend speed.
-     *   Bike:  NOT WRITTEN YET. Its reader has to match the exact data layout of the service
-     *          version on the actual tablet (a mismatch silently gives wrong numbers).
+     *   Bike:  written (BikeReader.kt), for the original Bike. It registers one listener and reads the first
+     *          five numbers of each frame; like the treadmill's it is used only with a version of the
+     *          service whose numbering and frame layout we have read for ourselves.
+     *   Bike+: NOT WRITTEN (a different interface; one of its numbers moves the resistance motor).
      */
     fun create(context: Context, platform: PelotonPlatform, demo: String?): SensorSource? {
         if (demo != null) return DemoSensorSource(demo)
-        if (platform != PelotonPlatform.TREAD) return null
         val version = TreadSensorSource.serviceVersion(context)
+        if (platform == PelotonPlatform.BIKE) {
+            if (version !in BikeRequests.CHECKED_VERSIONS) {
+                Log.w("MerryMiles", "bike: sensor service version $version has not been checked, so it is not being asked anything")
+                return null
+            }
+            return BikeSensorSource(context)
+        }
+        if (platform != PelotonPlatform.TREAD) return null
         if (version !in TreadQuestions.CHECKED_VERSIONS) {
             Log.w("MerryMiles", "tread: sensor service version $version has not been checked, so it is not being asked anything")
             return null

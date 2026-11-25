@@ -20,7 +20,7 @@ export class SettingsScreen {
     app.backdrop.draw(ctx, 0.62);
     if (header(ctx, input, 'GAME SETTINGS', 'BACK')) { app.sound.tap(); app.goPeople(); return; }
 
-    const ROWS = 8, px = 60, pw = W - 120, y0 = 42, rowH = Math.min(33, Math.floor((H - y0 - 10) / ROWS));
+    const ROWS = 9, px = 60, pw = W - 120, y0 = 42, rowH = Math.min(33, Math.floor((H - y0 - 10) / ROWS));
     panel(ctx, px, y0 - 3, pw, rowH * ROWS + 6, { fill: 'rgba(8,14,46,0.92)' });
     let i = 0;
     const row = (label, sub) => {
@@ -52,6 +52,9 @@ export class SettingsScreen {
     y = row('THE TRAIL OPENS', custom ? `YOUR OWN START: ${MONTHS[custom.getMonth()]} ${custom.getDate()}` : 'THANKSGIVING DAY: A MILE A DAY GETS YOU HOME');
     if (button(ctx, input, rx - 188, y, 108, 22, 'THANKSGIVING', { kind: !custom ? 'gold' : 'blue', selected: !custom })) { set.seasonStart = ''; save(); }
     if (button(ctx, input, rx - 74, y, 74, 22, 'TODAY', { kind: custom ? 'gold' : 'blue', selected: !!custom })) { set.seasonStart = season.today(); save(); }
+
+    y = row('ONLY IN THE SEASON', set.seasonLock !== false ? 'NO RIDES UNTIL THE TRAIL OPENS: THE HOME SCREEN COUNTS THE DAYS' : 'OFF: ANYBODY CAN RIDE ANY DAY (WARM-UP RIDES)');
+    if (toggle(y, set.seasonLock !== false)) { set.seasonLock = set.seasonLock === false; save(); }
 
     y = row('THE SKY', set.sky === 'night' ? 'EVERY RIDE STAYS UNDER THE STARS' : 'NIGHT, AND THE SUN COMES UP AS YOU FINISH YOUR MILE');
     if (button(ctx, input, rx - 196, y, 108, 22, 'NIGHT + SUNRISE', { kind: set.sky !== 'night' ? 'gold' : 'blue', selected: set.sky !== 'night' })) { set.sky = 'sunrise'; save(); }

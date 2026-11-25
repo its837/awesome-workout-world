@@ -67,7 +67,7 @@ export const DOOR_GIFTS = [
   'dog:0',                //  3  Nov 28  your first dog (the dogs in profiles.js, in the order they are written)
   ['wormsoup', 'lasergun'],   //  4  Nov 29  ...and the laser gun, the day before the reindeer come out of the trees
   'deer',                 //  5  Nov 30
-  'flurry',               //  6  Dec 1
+  'flurry',               //  6  Dec 1   (a birthday present can ride along behind a door: `presents` in family.js)
   ['fox', 'volleyball'],  //  7  Dec 2   ...and a volleyball: serve it at a streetlamp
   'dynamite',             //  8  Dec 3
   'poop',                 //  9  Dec 4
@@ -139,6 +139,12 @@ const SIGHTS = {
   lasergun: Object.assign({ name: 'LASER GUN', tag: 'LASER GUN', blurb: 'PICK IT UP, THEN TAP WHAT YOU WANT TO ZAP', quip: 'PEW. PEW PEW.' }, tool('lasergun')),
   volleyball: Object.assign({ name: 'VOLLEYBALL', tag: 'VOLLEYBALL', blurb: 'PICK IT UP, THEN SERVE IT AT THINGS. TRY A STREETLAMP', quip: 'SET. SPIKE. SORRY ABOUT THE LAMP.' }, tool('volleyball')),
   finger: Object.assign({ name: 'LONG SMELLY FINGER', tag: 'FINGER', blurb: 'PICK IT UP, THEN POKE THINGS WITH IT', quip: 'DO NOT SMELL IT.' }, tool('finger')),
+  // A hat to wear. It is a PRESENT (present: true): it is in the game only when a family has put it behind a day's door
+  // (`presents` in family.js); otherwise it does not exist. `only` (family.js `things`) says whose it is: for everybody else
+  // the door simply does not have it.
+  // Once its door is open it is on their head for every ride, on the home screen and on the map (camp.js dresses them: WORN below).
+  wizardhat: { present: true, name: 'WIZARD HAT', tag: 'WIZARD HAT', blurb: 'A POINTY HAT FOR EVERY RIDE', quip: 'ABRACADABRA. NOW GO RIDE.',
+    open: (r, t) => { if (isFor(t, r.profile)) r.rider.wear('wizard'); }, show: (r) => r.rider.wear('wizard') },
   flurry: { name: 'SNOW FLURRIES', tag: 'FLURRY', blurb: 'NOW AND THEN IT REALLY SNOWS', quip: 'HATS ON.', hold: (r) => { r.noFlurry = true; }, open: (r, t, quiet) => { r.noFlurry = false; if (!quiet) { r.snow.heavy = true; r.flurryLeft = 60; } } },
   poop: { name: 'POOP BREAKS', tag: 'POOP', blurb: 'ABOUT ONCE A MILE A DOG HAS TO GO', quip: 'WHEN YOU HAVE TO GO, YOU HAVE TO GO.', hold: (r) => { r.noPoop = true; }, open: (r) => { r.noPoop = false; r.nextPoop = 0; }, show: (r) => r.poopNow() },
   deer: Object.assign({ name: 'REINDEER', tag: 'REINDEER', blurb: 'WATCHING FROM THE TREES. TAP ONE!', quip: 'THEY WERE WATCHING THE WHOLE TIME.' }, hideIt('deer', 'deer', 0)),
@@ -163,7 +169,23 @@ export { RELATIVE, SANTA, EDWARD };
 // YOUR OWN WORDS FOR THINGS (`things` in family.js): a name, a line, what its door says.
 for (const [id, words] of Object.entries(FAMILY.things || {})) {
   const t = REWARDS[id] || SIGHTS[id];
-  if (t && words) for (const k of ['name', 'tag', 'blurb', 'say', 'quip', 'speak']) if (typeof words[k] === 'string') t[k] = words[k];
+  if (t && words) for (const k of ['name', 'tag', 'blurb', 'say', 'quip', 'speak', 'only']) if (typeof words[k] === 'string') t[k] = words[k];
+}
+
+/** Is this thing for them? (A thing with an `only` is one person's present; everything else is for everybody.) */
+export const isFor = (thing, profile) => !thing.only || !profile || thing.only === profile.id;
+/** The things that are worn, and the hat each puts on whoever has it (camp.js dresses people in them). */
+export const WORN = { wizardhat: 'wizard' };
+/** Whose present is this thing (a profile id), or null. */
+export const ownerOf = (id) => (SIGHTS[id] || REWARDS[id] || {}).only || null;
+/**
+ * PRESENTS (`presents` in family.js: 'MM-DD': ['wizardhat', 'birthdaycake']): on that day's door, as well as whatever the calendar
+ * has behind it. Give a thing an `only` (in `things` in family.js) and it is that person's alone: nobody else's door has it.
+ */
+export function presentsOn(day) {
+  const key = `${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+  const list = (FAMILY.presents || {})[key];
+  return Array.isArray(list) ? list.filter((id) => REWARDS[id] || SIGHTS[id]) : [];
 }
 
 // ---------------------------------------------------------------------------
@@ -229,6 +251,7 @@ export function doorList() {
 export function gatedGifts(profiles) {
   const out = new Set();
   for (const entry of doorList()) for (const id of listAt(entry)) out.add(canon(id, profiles));
+  for (const list of Object.values(FAMILY.presents || {})) for (const id of Array.isArray(list) ? list : []) if (REWARDS[id] || SIGHTS[id]) out.add(id);   // (a present is behind its day's door too)
   return out;
 }
 /** One spelling for each gift ('dog:0' and 'dog:<that dog's id>' are the same thing; so are 'join:0' and 'join:<their ids>'). */
@@ -251,7 +274,9 @@ export function allGifts(profiles, profile) {
   // (songs are not here: every song is in the songbook from the start. A 'tune:...' id on
   //  a door still works, if anybody ever wants one behind a door again.)
   ids.push('home');
-  return ids.map((id) => giftInfo(id, profiles, profile));
+  // (a present nobody has put behind a door is not in the game at all)
+  const behind = gatedGifts(profiles);
+  return ids.filter((id) => !(REWARDS[id] || SIGHTS[id] || {}).present || behind.has(id)).map((id) => giftInfo(id, profiles, profile));
 }
 
 /** { id, set, name, blurb } (and its hooks, if it has its own) for a gift id. */
@@ -330,6 +355,10 @@ const DRAWN = {
   // a pointing finger with a grubby nail, and what is coming off it
   finger: (g, w, h) => grid(g, w, h, [[0, 4, 9, 3, '#e8be9c'], [0, 6, 9, 1, '#b98f70'], [9, 4, 2, 3, '#e8be9c'], [9, 4, 2, 1, '#f3e3cf'], [9, 3, 2, 1, '#6b5a1e'],
     [3, 4, 1, 3, '#cfa482'], [6, 4, 1, 3, '#cfa482'], [9, 0, 1, 2, '#a4d93c'], [7, 1, 1, 2, '#a4d93c'], [10, 1, 1, 1, '#a4d93c'], [8, 0, 1, 1, '#a4d93c']]),
+  // a wizard hat: a tall indigo cone with a bent tip, gold stars, a gold band and a wide brim
+  wizardhat: (g, w, h) => grid(g, w, h, [[5, 0, 4, 1, '#3a3084'], [4, 1, 4, 1, '#3a3084'], [4, 2, 4, 1, '#3a3084'], [3, 3, 6, 1, '#3a3084'], [3, 4, 6, 1, '#3a3084'], [2, 5, 7, 1, '#3a3084'],
+    [3, 3, 1, 3, '#282060'], [4, 2, 1, 1, '#282060'], [5, 2, 1, 1, '#fad650'], [6, 4, 1, 1, '#fad650'], [4, 3, 1, 1, '#fff6c8'], [7, 3, 1, 1, '#fff6c8'],
+    [2, 5, 7, 1, '#fad650'], [0, 6, 11, 1, '#282060'], [1, 7, 9, 1, '#1c1648']]),
   poop: (g, w, h) => swirl(g, w, h, false),
   sprinklepoop: (g, w, h) => swirl(g, w, h, true),
   sleigh(g, w, h) {

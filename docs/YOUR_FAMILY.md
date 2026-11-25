@@ -75,6 +75,36 @@ and `speak` (what the tablet says out loud). **The picture does not change**, on
 Text is drawn in a capital-letter pixel font: A to Z, 0 to 9 and `. , ! ? : - + / % ' " ( ) & # * =`, with no
 accents, semicolons, at signs or underscores. Pets other than dogs cannot be drawn: give them a line instead.
 
+### Visitors: `stays` in profiles.js
+
+Somebody who is only with you for a few days (cousins at Thanksgiving) gets
+`stays: ['11-25', '11-28']`: the first and the last day they are here. They are on the
+welcome screen, the map and the calendar for those days and then they have gone home; their
+miles only count toward the family's goal for the days they are here. They stay in
+`profiles.js`, and their rides stay in the log.
+
+### More ways to draw somebody: `look` in profiles.js
+
+Besides height, hair, glasses and beards: `hat: 'sauna'` (a felt sauna hat) or `'wizard'`
+(a pointy one), `shirtless: true`, and `babySled: true` (a baby in a little red sled on
+their back: the baby is part of that person, not a rider).
+
+### Birthdays and presents: `days`, `presents` and `only` in family.js
+
+- `days: { '12-01': 'HAPPY BIRTHDAY, SOMEBODY!' }` puts your words on that day's door.
+- `presents: { '12-01': ['wizardhat', 'birthdaycake'] }` puts extra things behind that
+  day's door, after the day's own thing. `wizardhat` is a hat somebody wears on every ride
+  from the moment they open that door; `birthdaycake` is a cake to eat on rides.
+- Give a thing `only: 'their-id'` in `things` and it is that one person's present: nobody
+  else's door has it. Leave `only` off and everybody gets it.
+
+### Only in the season: `seasonOnly` in family.js
+
+`seasonOnly: true` keeps everybody waiting: until the trail opens (Thanksgiving, unless you
+move it in the game's Settings) the welcome screen only counts the days, nobody is on it and
+nobody can ride. It starts off, so the game can be tried on any day of the year. Each tablet
+can switch it in the game's Settings (ONLY IN THE SEASON).
+
 ### Photos
 
 The game can show a photo instead of a drawn face (`photo:` in `profiles.js`, with the file

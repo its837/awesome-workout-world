@@ -96,7 +96,7 @@ the code can be published without them. The order of work is in the README under
 
 ## Sensors
 
-Not written yet, but the research now gives us enough to write them without guessing.
+Written for the Tread and the original Bike (`android/.../sensors/`), and checked on our own two machines in November 2026. Not written for the Bike+ or the Tread+. What the research says:
 
 - **Every machine** exposes its sensors through one Peloton system service. Which machine
   we are on has to be read from a Peloton setting (`peloton_platform`); the tablet's model

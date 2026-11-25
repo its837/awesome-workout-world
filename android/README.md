@@ -142,7 +142,8 @@ See [../reports/Peloton tablet modding methods.md](../reports/Peloton%20tablet%2
 for the research, and [../docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md) for how we plan to
 use it. In short: every machine exposes its sensors through the system service
 `com.onepeloton.affernetservice`; the readers go in `sensors/Sensors.kt` behind
-`SensorSources.create`, and until they exist the game runs on its simulator.
+`SensorSources.create`. There is one for the Tread (`TreadReader.kt`) and one for the
+original Bike (`BikeReader.kt`); on anything else the game runs on its simulator.
 
 **Treadmill rule:** the same service will move the belt and the incline if asked. Our reader
 may ask two questions only, "current speed" and "current incline" (calls 17 and 18), and

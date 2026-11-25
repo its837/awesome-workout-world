@@ -8,6 +8,7 @@ import { RIDER_DIST, HORIZON } from './config.js';
 import { ART } from './rewards.js';
 import { drawDog, COATS, Companion } from './dogs.js';
 import { Buddies } from './buddies.js';
+import { babySled } from './figure.js';
 
 export const BW = 2.0, BH = 2.4;
 const METAL = [70, 76, 96], TIRE = [26, 28, 38], TIRE_L = [62, 66, 86];
@@ -37,16 +38,18 @@ export class Rider {
     this.curly = !!look.curly;
     this.skin = look.skin || C.skin;
     this.hat = look.hat || 'santa';
+    this.shirtless = !!look.shirtless;                     // no shirt: the body is skin
+    this.baby = !!look.babySled;                           // a baby in a little red sled on their back
     this.hatCol = look.hatCol || look.jacket || C.red;
     this.K = (look.height || ART_HEIGHT) / ART_HEIGHT;    // how tall, against the art
     this.wide = look.b || 1;                               // how broad
     this.pants = look.pants || PANTS;
     this.pantsD = this.pants.map((v) => v * 0.74);
-    this.jacket = look.jacket || [214, 52, 58];
-    this.jacketD = this.jacket.map((v) => v * 0.7);
+    this.jacket = this.shirtless ? this.skin : look.jacket || [214, 52, 58];
+    this.jacketD = this.jacket.map((v) => v * (this.shirtless ? 0.88 : 0.7));
     this.packCol = [44, 120, 110];
     this.packL = this.packCol.map((v) => Math.min(255, v * 1.3));
-    this.glove = this.species === 'dog' ? DOG.fur : this.species === 'frog' ? FROG.skin : [34, 36, 50];
+    this.glove = this.species === 'dog' ? DOG.fur : this.species === 'frog' || this.shirtless ? (this.species === 'frog' ? FROG.skin : this.skin) : [34, 36, 50];
     this.boot = this.species === 'dog' ? DOG.furD : this.species === 'frog' ? FROG.dark : [30, 32, 44];
     this.frames = new Frames(POSES * WIGS + 8);
     this.qph = 0;             // the phase of the pose being drawn
@@ -221,12 +224,26 @@ export class Rider {
         }
       } else if (this.curly && st !== 'bald') for (const sd of [-1, 1]) E(hx + sd * 0.13, 1.6 + hy, 0.045, 0.045, hairD);
     }
-    L(hx + 0.04, 1.55 + hy, hx + 0.27 + 0.03 * Math.sin(w * 2), 1.43 + hy + 0.03 * Math.cos(w), 0.075, [70, 190, 120]);
+    if (!this.shirtless) L(hx + 0.04, 1.55 + hy, hx + 0.27 + 0.03 * Math.sin(w * 2), 1.43 + hy + 0.03 * Math.cos(w), 0.075, [70, 190, 120]);
     if (this.hat === 'beanie') {
       const col = this.hatCol;
       E(hx, 1.79 + hy, 0.16, 0.12, col);
       R(hx - 0.165, 1.7 + hy, 0.33, 0.075, col.map((v) => v * 0.74));
       E(hx, 1.93 + hy, 0.055, 0.055, C.white);
+    } else if (this.hat === 'sauna') {
+      // a felt sauna hat from behind: a soft cone, a limp tip flopping over, and the turned-up brim
+      const felt = [226, 212, 176];
+      PG([hx - 0.155, 1.75 + hy, hx + 0.155, 1.75 + hy, hx + 0.1, 1.9 + hy, hx + 0.03, 2.03 + hy, hx - 0.03, 2.03 + hy, hx - 0.1, 1.9 + hy], felt);
+      E(hx + 0.07 + flop, 2.01 + hy, 0.075, 0.04, felt);
+      R(hx - 0.18, 1.7 + hy, 0.36, 0.07, felt.map((v) => v * 0.8));
+    } else if (this.hat === 'wizard') {
+      // a wizard hat from behind: a wide brim, a tall indigo cone with its tip bent over, a gold band and a few stars
+      const col = [58, 48, 132], colD = [40, 32, 94], gold = [250, 214, 80];
+      E(hx, 1.745 + hy, 0.27, 0.05, colD);
+      PG([hx - 0.15, 1.75 + hy, hx + 0.15, 1.75 + hy, hx + 0.085, 1.98 + hy, hx + 0.1 + flop, 2.12 + hy, hx + 0.22 + flop, 2.17 + hy, hx + 0.2 + flop, 2.24 + hy, hx + 0.03, 2.2 + hy, hx - 0.04, 2.08 + hy, hx - 0.085, 1.98 + hy], col);
+      PG([hx - 0.15, 1.75 + hy, hx - 0.06, 1.75 + hy, hx - 0.03, 1.98 + hy, hx - 0.085, 1.98 + hy], colD);
+      R(hx - 0.155, 1.77 + hy, 0.31, 0.035, gold);
+      R(hx + 0.03, 1.88 + hy, 0.03, 0.03, gold); R(hx - 0.06, 1.97 + hy, 0.025, 0.025, [255, 246, 200]); R(hx + 0.07, 2.06 + hy, 0.025, 0.025, gold);
     } else if (this.hat === 'cap') {
       const col = this.hatCol;
       E(hx, 1.79 + hy, 0.16, 0.125, col);
@@ -245,6 +262,12 @@ export class Rider {
       }
     }
   }
+
+  /** Put a hat on for the rest of the ride (a hat a door has just given them). */
+  wear(hat, col) { this.hat = hat; if (col) this.hatCol = col; this.frames.map.clear(); }
+
+  /** The baby in its little red sled, on the rider's back (look.babySled): it faces you, over the rider's shoulders. */
+  _baby(g, sway, bob) { babySled(g, sway, 1.2 + bob, 'face', this.skin, this.hair, this.wig + this.qph); }
 
   /** g: the body's tools. bike: the bike's own (unscaled) tools, when there is one. */
   _extras(g, sway, bob, bike) {
@@ -294,6 +317,7 @@ export class Rider {
     g.PG([-0.2 * b, 1.0 + bob, 0.2 * b, 1.0 + bob, 0.26 * b, 1.5 + bob, -0.26 * b, 1.5 + bob], this.jacket);
     g.PG([0.06 * b, 1.0 + bob, 0.2 * b, 1.0 + bob, 0.26 * b, 1.5 + bob, 0.11 * b, 1.5 + bob], this.jacketD);
     g.E(0, 1.5 + bob, 0.26 * b, 0.09, this.jacket);
+    if (this.baby) this._baby(g, 0, bob);
     for (const sd of [-1, 1]) {
       const col = sd < 0 ? this.jacket : this.jacketD, sy = by(1.47 + bob);
       L(sd * 0.25 * b * K, sy, sd * 0.37, (sy + 1.23) / 2 + 0.03, 0.12 * K, col);
@@ -330,9 +354,12 @@ export class Rider {
     PG([-0.2 * b + sway, 0.96 + bob, 0.2 * b + sway, 0.96 + bob, 0.26 * b + sway, 1.5 + bob, -0.26 * b + sway, 1.5 + bob], this.jacket);
     PG([0.08 * b + sway, 0.96 + bob, 0.2 * b + sway, 0.96 + bob, 0.26 * b + sway, 1.5 + bob, 0.13 * b + sway, 1.5 + bob], this.jacketD);
     E(sway, 1.5 + bob, 0.26 * b, 0.09, this.jacket);
-    R(-0.17 + sway, 1.04 + bob, 0.34, 0.4, this.packCol);
-    R(-0.17 + sway, 1.36 + bob, 0.34, 0.09, this.packL);
-    R(-0.03 + sway, 1.1 + bob, 0.06, 0.2, this.packL);
+    if (this.baby) this._baby(g, sway, bob);
+    else {
+      R(-0.17 + sway, 1.04 + bob, 0.34, 0.4, this.packCol);
+      R(-0.17 + sway, 1.36 + bob, 0.34, 0.09, this.packL);
+      R(-0.03 + sway, 1.1 + bob, 0.06, 0.2, this.packL);
+    }
     for (const sd of [-1, 1]) {
       const [hx, hy] = hand(sd);
       const col = sd < 0 ? this.jacket : this.jacketD;

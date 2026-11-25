@@ -5,14 +5,15 @@ other owners have reported for our two exact tablet models. It was made from our
 research notes (14 November) and our code as it stands today. No web lookups were done.
 Nothing was plugged in, built or run.
 
-**Nothing of ours has been on either tablet yet. Every line below is somebody else's
-report, or a gap.**
+**This page was written before anything of ours had been on either tablet: every line
+below is somebody else's report, or a gap. What we have since seen on our own Tread and
+our own Bike is in [../BIKE_AND_TREADMILL.md](../BIKE_AND_TREADMILL.md).**
 
 ## The short version
 
 1. **Getting installed and reading the machine look good on both.** Other owners report
    installs over a cable, and the sensor readings we want, on both of our exact models in
-   2026. Our own sensor readers are not written yet.
+   2026. (Since then both of our readers have been written and checked on our own machines.)
 2. **The bike is the well-trodden one.** Being the home screen, the 1920 by 1008 screen
    area and the 30-minute idle behaviour all have reports on a `PLTN-RB1VQ`.
 3. **The treadmill is where the streaming tiles are in doubt.** On the one Tread studied,

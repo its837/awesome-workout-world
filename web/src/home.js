@@ -25,7 +25,7 @@ import { glowCanvas, LIGHT_COLS, LIGHT_CSS, uiSprite } from './sprites.js';
 import { EVENT, THANKSGIVING } from './text.js';
 import { RideScreen } from './ride.js';
 import { figureSprite } from './figure.js';
-import { giftInfo, giftIcon, earnedFor } from './gifts.js';
+import { giftInfo, giftIcon, earnedFor, isFor } from './gifts.js';
 import { doorCard, stepDoor, drawDoorSide, closeDoor, SIDE_W, SIDE_H } from './door.js';
 
 const rgb = (c) => `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
@@ -156,7 +156,18 @@ export class HomeScreen {
     });
   }
 
+  /** The season has not opened (ONLY IN THE SEASON): nobody is here, only the days to go. */
+  _countdown(ctx, top) {
+    const season = this.app.season, n = season.daysUntilStart(), y = top + 112;
+    drawText(ctx, EVENT.tagline, W / 2, top + 42, { align: 'center', color: '#dfe9ff' });
+    this._journey(ctx, top + 72);
+    drawText(ctx, String(n), W / 2, y, { scale: 10, align: 'center', color: '#ffd76a' });
+    drawText(ctx, n === 1 ? 'DAY' : 'DAYS', W / 2, y + 82, { scale: 4, align: 'center', color: '#ffd76a' });
+    drawText(ctx, `UNTIL ${EVENT.name}`, W / 2, y + 122, { scale: 2, align: 'center', color: '#ffffff' });
+  }
+
   _who(ctx, top) {
+    if (this.app.season.locked()) { this._countdown(ctx, top); return; }
     const app = this.app, input = app.input, season = app.season, list = season.roster();
     if (season.isThanksgiving()) drawText(ctx, `${THANKSGIVING.line} ${THANKSGIVING.say}`, W / 2, top + 38, { scale: 2, align: 'center', color: '#ffd76a' });
     else drawText(ctx, EVENT.tagline, W / 2, top + 42, { align: 'center', color: '#dfe9ff' });
@@ -333,7 +344,7 @@ export class HomeScreen {
         const icon = giftIcon(info.id, cw - 12, dh - 12, app.profiles);
         ctx.drawImage(icon, x + Math.round((cw - icon.width) / 2), y + 9 + Math.round((dh - 12 - icon.height) / 2));
         drawText(ctx, String(d.getDate()), x + 4, y + 3, { color: '#8fa3d6' });
-        const extra = season.giftsAt(k).length - 1;
+        const extra = season.giftsAt(k).filter((g) => isFor(giftInfo(g, app.profiles, p), p)).length - 1;
         if (extra > 0) drawText(ctx, `+${extra}`, x + cw - 4, y + dh - 10, { align: 'right', color: '#ffd76a' });
         caption = (info.tag || info.name).slice(0, Math.floor(cw / 6)); capCol = '#c9d8ff';
       } else {

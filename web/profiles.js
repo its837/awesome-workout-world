@@ -21,7 +21,11 @@
 //             face:    'round' | 'oval' | 'long' | 'square'
 //             beard:   'stubble' | 'short' | 'full' | 'moustache'   (beardCol: its colour, if not the hair's)
 //             glasses: 'round' | 'square' | 'sun'
-//             hat:     'santa' | 'beanie' | 'cap' | 'none'   (hatCol: a beanie's or cap's colour; capMark: 'B' puts that letter on a cap, markCol its colour)
+//             hat:     'santa' | 'beanie' | 'cap' | 'sauna' | 'wizard' | 'none'   (hatCol: a beanie's or cap's colour; capMark: 'B' puts that letter on a cap, markCol its colour; 'sauna' is a felt sauna hat, 'wizard' a pointy one)
+//             shirtless: true   no shirt: the body is drawn in skin colour
+//             babySled:  true   a baby in a little red sled, strapped to their back
+//   stays   optional, for a VISITOR: ['MM-DD', 'MM-DD'], the first and the last day they are here. They are on the
+//           welcome screen from the first day (no door) and go home after the last day.
 //             species: 'dog' | 'frog'   (everyone else is a person)
 //             breed:   'mastiff' | 'lab'   (for dogs), and coat: { fur, furD, head, ear, paw, mask, chin, stripe, blaze, patch }
 //                      to change a dog's colours

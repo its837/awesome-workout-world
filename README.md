@@ -19,15 +19,24 @@ known to Peloton.
 > [advanced set-up](docs/ADVANCED_SETUP.md) (more than one Peloton, or friends). At the end of
 > the season there is a prompt for a [Wrapped video](docs/WRAPPED.md).
 
-**Start here**
+**Start here: three steps**
 
-- **Make it your family's:** have a [Family Meeting](docs/FAMILY_MEETING.md) (an AI asks, you
-  answer) or go rogue with the [Rogue Meeting](docs/ROGUE_MEETING.md) (you dream, an AI builds); [docs/YOUR_FAMILY.md](docs/YOUR_FAMILY.md) is what it writes, if you would rather do
-  it by hand. The repository holds one made-up person (Nerd) and some outlines where your
-  family goes; yours go in a `family/` folder that never leaves your computer.
-- **Put it on a Peloton:** [docs/INSTALL.md](docs/INSTALL.md). Two ways: *side by side*
-  (one more app; Peloton untouched) or *full takeover* (the tablet starts up into it).
+1. **Have a family meeting.** Give your AI the [Family Meeting](docs/FAMILY_MEETING.md) (it
+   asks, you answer) or go rogue with the [Rogue Meeting](docs/ROGUE_MEETING.md) (you dream,
+   it builds).
+2. **Get all your fun stuff built.** Your AI writes your people, pets, relatives, foods,
+   birthdays and visitors into a `family/` folder that never leaves your computer.
+   ([docs/YOUR_FAMILY.md](docs/YOUR_FAMILY.md) is what it writes, if you would rather do it
+   by hand.) The repository holds one made-up person (Nerd) and some outlines where your
+   family goes.
+3. **Install.** [docs/INSTALL.md](docs/INSTALL.md) puts it on a Peloton with a cable. Two
+   ways: *side by side* (one more app; Peloton untouched) or *full takeover* (the tablet
+   starts up into it).
+
 - **What has been tried on which machine:** [docs/BIKE_AND_TREADMILL.md](docs/BIKE_AND_TREADMILL.md).
+  It runs on a Tread and on an original Bike, and on both the game follows the real machine.
+- **More than one Peloton?** Keeping their rides in step is the
+  [advanced set-up](docs/ADVANCED_SETUP.md). Most families will not need it.
 - **The website:** [its837.github.io/awesome-workout-world](https://its837.github.io/awesome-workout-world/) (the trailer, the advent calendar, and the game to try). The files are in `site/`; look at it yourself with `node tools/site.mjs`.
 
 - **Awesome Workout World** is the tablet's home page. It is not about riding: it is the
@@ -41,32 +50,30 @@ known to Peloton.
   family profiles in Santa hats, a mile a day to get home for Christmas, and an advent
   calendar that hands out the good stuff one door at a time.
 
-## What's next, in order
+## Where it stands, and what's next
 
-1. **Try it on the real tablets.** Plug each one in, run the read-only check, take the
-   baseline snapshot, install, and run `tools/android.sh speedtest`. Then the sensor
-   readers can be written for the machines we actually have. Also install the Netflix,
-   Hulu and Spotify apps and find out which of them play, and how YouTube is best
-   reached (see "Watching YouTube, Netflix, Hulu and Spotify"). See "Getting it onto the
-   real Peloton" below.
-2. **Take the family out of the code, so the project can go on a public Git repository.**
-   Today the family is part of the game's files: `web/profiles.js` holds the names, looks,
-   heights and which dog runs with whom, and `web/photos/` is where the photos will go.
-   Names also
-   appear as examples in this README, `EASTER_EGGS.md`, `tools/android.sh`, the research
-   report and comments in four source files. The plan: the public game ships with a
-   stand-in family; the real one is a single private file (names, looks, photos) that the
-   tablets fetch from the online home in step 3 and keep a copy of, so a ride still works
-   without Wi-Fi. Per-tablet reports (`docs/tablets/`) and save-data backups (`backups/`)
-   stay out of the repository too.
-3. **The online home. This is the goal.** One small private service that holds three
-   things: the family file from step 2, the shared ride log (so your progress, tent and
-   advent door follow you whether you biked or skinned), and the game's files for
-   over-the-air updates. Until it exists each machine keeps its own trail and "Check for
-   updates" has nowhere to look. It needs an account that the owner creates, a family key so
-   strangers cannot write to it, and signed updates so only we can publish.
+Done, on the machines it was made on (a Tread and an original Bike):
 
-Steps 2 and 3 go together: the private family file needs somewhere private to live.
+- **It installs over a cable on both**, and can be the tablet's home screen.
+- **The game follows the real machine on both.** Belt speed and incline on the Tread;
+  cadence, resistance and power on the Bike. It only ever reads: see
+  [docs/BIKE_AND_TREADMILL.md](docs/BIKE_AND_TREADMILL.md). There is no reader for a Bike+
+  or a Tread+ yet: on those the game runs on its own pretend numbers.
+- **The family is out of the code.** The repository ships one made-up person; yours lives
+  in `family/` on your own computer.
+- **Two Pelotons can share one trail**, through a private repository of your own
+  ([docs/ADVANCED_SETUP.md](docs/ADVANCED_SETUP.md)). Most families will not need it.
+
+Next:
+
+1. **Readers for the Bike+ and the Tread+.** Nobody here owns one. The research is in
+   `reports/`; the rules for writing one safely are in
+   [docs/BIKE_AND_TREADMILL.md](docs/BIKE_AND_TREADMILL.md).
+2. **Updates without the Mac.** "Check for updates" works when the tablet can reach your
+   Mac on the same Wi-Fi (see "Updating the game on the tablet without a cable"). Somewhere
+   for updates to live when the Mac is off is not built.
+3. **The TV apps on the Bike.** YouTube, Netflix, Hulu and a music app have only been
+   tried on the Tread.
 
 Also wanted, not started:
 

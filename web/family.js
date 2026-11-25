@@ -25,4 +25,10 @@ export const FAMILY = {
   // Your own words for any thing in the catalog (web/src/rewards.js, web/src/gifts.js), by its id:
   //   cake: { name: "NANA'S BIRTHDAY CAKE", blurb: 'DECEMBER 24 IS HER BIRTHDAY', quip: 'NO SINGING!', speak: 'Happy birthday, Nana!' }
   things: {},
+  // PRESENTS: things that ride along behind a day's door, as well as whatever the calendar has there: 'MM-DD': ['wizardhat', 'birthdaycake'].
+  // Give a thing an `only` in `things` (only: 'someone-s-id') and it is that person's alone; for everybody else the door simply does not have it.
+  presents: {},
+  // true: ONLY IN THE SEASON starts switched on. Until the trail opens (and after Christmas) the home screen just counts the days:
+  // nobody is on it and nobody can ride. (Each tablet can switch it in the game's Settings.)
+  seasonOnly: false,
 };

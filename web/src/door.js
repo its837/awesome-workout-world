@@ -19,7 +19,7 @@ import { W, H } from './config.js';
 import { clamp, MONTHS, TAU, daysBetween, makeCanvas } from './util.js';
 import { drawText, textWidth, wrapText } from './font.js';
 import { panel } from './ui.js';
-import { giftInfo, giftIcon, KINDS } from './gifts.js';
+import { giftInfo, giftIcon, KINDS, isFor } from './gifts.js';
 import { relativeSprite } from './relative.js';
 import { FAMILY } from '../family.js';
 import { santaSprite, santaFrame } from './santa.js';
@@ -49,7 +49,8 @@ const yourDay = (m, d) => String((FAMILY.days || {})[`${String(m + 1).padStart(2
 
 export function doorCard(season, n, profiles, profile, ids) {
   const day = season.dayOfDoor(n), m = day.getMonth(), d = day.getDate();
-  const all = (ids || season.giftsAt(n)).map((id) => giftInfo(id, profiles, profile));
+  // (a present for somebody else is not in your door; yours come out after the day's own thing)
+  const all = (ids || season.giftsAt(n)).map((id) => giftInfo(id, profiles, profile)).filter((i) => isFor(i, profile));
   const special = daysBetween(season.thanksgiving(), day) === 0 ? 'HAPPY THANKSGIVING!' : m === 11 && d === 25 ? 'MERRY CHRISTMAS!' : yourDay(m, d);
   const milk = all[0].id === 'penguin' && all.some((i) => i.id === 'penguinmilk');     // the penguin fills a glass (milk.js)
   return { door: n, day, today: n === season.doorToday(), last: n >= season.doorCount(), info: all[0], more: all.slice(1), special, milk, t: 0, secs: 8 + (all.length - 1) * 1.5 };
@@ -64,7 +65,7 @@ export function stepDoor(c, dt, sound) {
     if (KNOCKS.some(hit)) sound.thump();
     if (hit(OPEN_AT)) sound.fanfare();
     if (hit(OUT_AT + 0.1)) sound.sparkle();
-    if (hit(3.0) && c.info.speak) sound.speak(c.info.speak);
+    if (hit(3.0)) { const say = c.info.speak || (c.more.find((i) => i.speak) || {}).speak; if (say) sound.speak(say); }
     if (c.milk) {
       if (MILK.squirts.some((s) => hit(OUT_AT + s)) && sound.squirt) sound.squirt();
       if (hit(OUT_AT + MILK.done)) sound.chime();

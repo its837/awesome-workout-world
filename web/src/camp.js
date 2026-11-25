@@ -30,7 +30,7 @@
 import { addDays, dayKey, daysBetween, parseDay, hashI, clamp, MILE } from './util.js';
 import { STAGE_METERS } from './session.js';
 import { EVENT } from './text.js';
-import { giftAt, giftsAt, gatedGifts, dogGift, joinGiftOf } from './gifts.js';
+import { giftAt, giftsAt, gatedGifts, dogGift, joinGiftOf, isFor, WORN, ownerOf, presentsOn } from './gifts.js';
 
 const isDog = (p) => !!(p.look && p.look.species === 'dog');
 export const OPEN_AFTER = 60;   // seconds of riding that open your doors
@@ -73,6 +73,12 @@ export class Season {
   /** Is it Thanksgiving Day today? (Everybody says GOBBLE GOBBLE.) */
   isThanksgiving() { return daysBetween(this.thanksgiving(), this.now()) === 0; }
   started() { return this.now() >= this.start(); }
+  /**
+   * Is the season shut? With ONLY IN THE SEASON on (Settings), until the trail opens (and after Christmas, when the next
+   * one is the one we are counting to) nobody is on the home screen, the map or the calendar, and nobody can ride:
+   * the home screen just counts the days. (The test scenes that unlock everything ignore it.)
+   */
+  locked() { return this.store.settings.seasonLock !== false && !this.started() && !this.forceAll; }
   daysUntilStart() { return Math.max(0, daysBetween(this.now(), this.start())); }
   /** How many doors the calendar has: one for each day from the start to Christmas Day. */
   doorCount() { return Math.max(1, daysBetween(this.start(), this.xmas()) + 1); }
@@ -94,7 +100,12 @@ export class Season {
   }
   /** The thing pictured on door n, and everything behind it (a door can hold several things). */
   giftAt(n) { return giftAt(n, this.doorCount(), this.all); }
-  giftsAt(n) { return giftsAt(n, this.doorCount(), this.all); }
+  giftsAt(n) {
+    const list = giftsAt(n, this.doorCount(), this.all);
+    if (n >= this.doorCount()) return list;                                  // (the last door brings everything anyway)
+    const extra = presentsOn(this.dayOfDoor(n)).filter((id) => !list.includes(id));
+    return extra.length ? list.concat(extra) : list;
+  }
   /** The door a thing is behind (0 if it is not on the calendar). */
   doorWith(gift) { for (let n = 1, c = this.doorCount(); n <= c; n++) if (this.giftsAt(n).includes(gift)) return n; return 0; }
 
@@ -110,8 +121,24 @@ export class Season {
   _cache() {
     const s = this.store.settings;
     const key = `${this.store.rev || 0}|${this.store.rides.length}|${this.today()}|${this.startKey()}|${s.gifts !== false}|${!!s.unlockAll}|${!!this.forceAll}`;
-    if (!this._memo || this._memo.key !== key) this._memo = { key, doors: {}, unlocks: {}, here: {} };
+    if (!this._memo || this._memo.key !== key) { this._memo = { key, doors: {}, unlocks: {}, here: {} }; this._dress(); }
     return this._memo;
+  }
+  /**
+   * Put on whatever hat a door has given somebody (gifts.js WORN, for a present that is theirs). The profile's own `look`
+   * is kept as it was written (`_look0`) and swapped for the dressed one, so every screen, the map and the rides see it.
+   */
+  _dress() {
+    for (const p of this.profiles) {
+      if (isDog(p)) continue;
+      const base = p._look0 || (p._look0 = p.look || {});
+      let hat = null;
+      const behind = gatedGifts(this.all);          // (a hat nobody has put behind a door is nobody's)
+      for (const g of Object.keys(WORN)) if (behind.has(g) && isFor({ only: ownerOf(g) }, p) && this.has(p.id, g)) hat = WORN[g];
+      if (!hat) { if (p.look !== base) p.look = base; continue; }
+      if (!p._dressed || p._dressed.hat !== hat) p._dressed = Object.assign({}, base, { hat });
+      if (p.look !== p._dressed) p.look = p._dressed;
+    }
   }
 
   /**
@@ -183,15 +210,31 @@ export class Season {
   has(id, gift) { return !gatedGifts(this.all).has(gift) || this.unlocks(id).has(gift); }
 
   // --- who is here ---------------------------------------------------------
-  /** The day somebody arrives (profiles.js `arrives`: 'MM-DD' or 'YYYY-MM-DD'), or null. */
-  arrival(p) {
-    if (!p.arrives) return null;
-    const m = /^(?:(\d{4})-)?(\d{1,2})-(\d{1,2})$/.exec(String(p.arrives));
+  /** A day written 'MM-DD' or 'YYYY-MM-DD' as a date, or null. */
+  _dayOf(text) {
+    const m = /^(?:(\d{4})-)?(\d{1,2})-(\d{1,2})$/.exec(String(text || ''));
     if (!m) return null;
     const month = Number(m[2]) - 1, xmas = this.xmas();
     // a date with no year belongs to this season: a January date is the one after Christmas
     const year = m[1] ? Number(m[1]) : month < 6 ? xmas.getFullYear() + 1 : xmas.getFullYear();
     return new Date(year, month, Number(m[3]));
+  }
+  /**
+   * A VISIT (profiles.js `stays: ['MM-DD', 'MM-DD']`): somebody who is here from the first day to the last
+   * day (both included) and then goes home. { from, last } as dates, or null for the family who live here.
+   * A visitor is not behind a door: they are here the whole of the first day, and gone from the day after the last.
+   */
+  stay(p) {
+    if (!Array.isArray(p.stays) || p.stays.length !== 2) return null;
+    const from = this._dayOf(p.stays[0]), last = this._dayOf(p.stays[1]);
+    return from && last && last >= from ? { from, last } : null;
+  }
+  /** Has this visitor's stay ended? (Somebody who lives here never has.) */
+  gone(p) { const s = this.stay(p); return !!s && this.now() >= addDays(s.last, 1); }
+  /** The day somebody arrives (profiles.js `arrives`: 'MM-DD' or 'YYYY-MM-DD', or the first day of a visit), or null. */
+  arrival(p) {
+    const s = this.stay(p);
+    return s ? s.from : this._dayOf(p.arrives);
   }
   /** The first day somebody takes part: the day after they arrive. Their mile a day counts from here. */
   startsOn(p) { const a = this.arrival(p); return a ? addDays(a, 1) : null; }
@@ -201,7 +244,8 @@ export class Season {
     const memo = this._cache();
     if (memo.here[p.id] != null) return memo.here[p.id];
     let ok = true;
-    const a = this.arrival(p), now = this.now();
+    const st = this.stay(p), a = this.arrival(p), now = this.now();
+    if (st) return (memo.here[p.id] = now >= st.from && now < addDays(st.last, 1));   // a visit: here from the first day until the last day is over
     if (a && now < a) ok = false;                      // never before the day they come
     else if (a && now < addDays(a, 1) && this.gating()) {
       // the day they come: once somebody has opened their door (if they are behind one)
@@ -215,13 +259,13 @@ export class Season {
     return (memo.here[p.id] = ok);
   }
   /** The family members who are here now, dogs included (no guest). */
-  family() { return this.profiles.filter((p) => this.here(p)); }
+  family() { return this.locked() ? [] : this.profiles.filter((p) => this.here(p)); }
   /** The people who are here now (no dogs, no guest): the ones with doors to open. */
   people() { return this.family().filter((p) => !isDog(p)); }
   /** The dogs who have joined the family. */
   dogsHere() { return this.family().filter(isDog); }
   /** Everybody who can be picked on the welcome screen: the people who are here, and the guest. Nobody rides as a dog. */
-  roster() { return this.all.filter((p) => !isDog(p) && this.here(p)); }
+  roster() { return this.locked() ? [] : this.all.filter((p) => !isDog(p) && this.here(p)); }
   /** A dog's own numbers, from the rides it has joined: { miles (trail miles), poops, outings, best (longest run), pal (the person it runs with most) }. */
   dogStats(id) {
     const memo = this._cache();
@@ -243,9 +287,10 @@ export class Season {
     out.pal = top ? this.all.find((p) => p.id === top) || null : null;
     return (memo.dogs[id] = out);
   }
-  /** Family still to come: { people, dogs }. */
+  /** Family still to come: { people, dogs }. (A visitor who has already gone home is not still to come.) */
   toCome() {
-    const away = this.profiles.filter((p) => !this.here(p));
+    if (this.locked()) return { people: [], dogs: [] };
+    const away = this.profiles.filter((p) => !this.here(p) && !this.gone(p));
     return { people: away.filter((p) => !isDog(p)), dogs: away.filter(isDog) };
   }
 
@@ -288,6 +333,12 @@ export class Season {
     const people = this.profiles.filter((p) => !isDog(p)), n = this.doorCount();
     let goal = 0;
     for (const p of people) {
+      const st = this.stay(p);
+      if (st) {                                       // a visitor: only the days of the season they are here
+        const first = Math.max(0, daysBetween(this.start(), st.from)), last = Math.min(n - 1, daysBetween(this.start(), st.last));
+        goal += Math.max(0, last - first + 1);
+        continue;
+      }
       const from = this.startsOn(p);
       goal += from ? clamp(n - Math.max(0, daysBetween(this.start(), from)), 0, n) : n;
     }
@@ -341,8 +392,9 @@ export class Season {
       const day = addDays(first, i);
       this.profiles.forEach((p, pi) => {
         if (isDog(p)) return;                           // nobody rides as a dog
-        const from = this.startsOn(p);
+        const from = this.startsOn(p), st = this.stay(p);
         if (from && day < from) return;
+        if (st && day > st.last) return;                // (a visitor goes home)
         const keen = 0.45 + ((hashI(pi * 77 + 5) % 50) / 100);
         if ((hashI(pi * 1000 + i * 13 + 1) % 100) / 100 > keen) return;
         add(p, pi, i);

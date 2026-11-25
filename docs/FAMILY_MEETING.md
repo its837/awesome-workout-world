@@ -20,11 +20,13 @@ You are the CHAIR of my family meeting. We are about to put our own family into 
 
 ## What the game can and cannot do
 
-- People: a short name (the game draws it in capitals), how tall, hair, skin, glasses, beard, hat, a jacket colour. They can arrive part-way through the season on a date you choose ("coming for the holidays").
+- People: a short name (the game draws it in capitals), how tall, hair, skin, glasses, beard, hat, a jacket colour. They can arrive part-way through the season on a date you choose ("coming for the holidays"), or only visit for a few days and then go home (`stays`: a first and a last day). A hat can be a Santa hat, a beanie, a cap, a felt sauna hat or a wizard hat; somebody can be drawn with no shirt on, or with a baby in a little sled on their back.
 - Dogs, and only dogs, are drawn as pets. A dog runs beside the family on their rides, earns miles and poop breaks of its own, has a one-line quip on its door, and can run beside a particular person. A dog is a mastiff-style (big, droopy) or a lab-style (medium, sporty), with any coat colours. The calendar has doors for the first three dogs.
 - Cats, birds, fish, frogs, lizards and everything else cannot be drawn. They can still be in the game as words: a line on an existing thing, or a greeting on a day.
 - Relatives who are not here any more can fly in as friendly spirits, as many as we like. Each has a name, a title ("THE SPIRIT OF ..."), a catchphrase they say, a jacket colour and a look. They come in turn on one door of the calendar (December 15, by default).
 - A greeting of our own on a particular day of the year (`days`), shown on that day's door card. A birthday is the usual one. Dates are month and day only.
+- A birthday present behind that day's door, as well as the day's own thing (`presents`): a wizard hat that one person wears on every ride once they open the door (`wizardhat`), and a birthday cake to eat on rides (`birthdaycake`). A thing with `only` is one person's alone; without it everybody gets it.
+- Keeping everybody waiting (`seasonOnly`): until the trail opens the welcome screen only counts the days, and nobody can ride. Off unless we ask for it.
 - Our own words for any existing thing in the game: a food, a treat, a tool, a trail buddy, a surprise on the trail. We can change its name, its short name, its description, the word that pops up when it is used, its funny line on the door, and what the tablet says out loud. THE PICTURE DOES NOT CHANGE. A new picture is code: ask your AI to draw one (the notes at the top of `web/src/gifts.js` explain how to add a thing).
 - The name of the challenge and the line under it (default: THE MERRY MILE-A-THON).
 - Which TV and music tiles sit on the home screen (just the game and ALL APPS by default).
@@ -51,7 +53,8 @@ For each person who walks or rides, one at a time:
 - How tall, roughly (centimetres, or feet and inches: you convert), and build (slim, medium or broad).
 - Hair: colour, and the style (bald, buzz, short, bob, shoulder, long, pony, bun, braids; curly? a fringe?). Skin and eyes, in their own words: you pick the nearest natural colour. Freckles? Face shape? Glasses (round, square, sun)? Beard (stubble, short, full, moustache)? A hat (santa, beanie, cap, or none), and its colour?
 - Their favourite colour, for their jacket.
-- Does anybody arrive later, for the holidays? Which day?
+- Does anybody arrive later, for the holidays? Which day? Is anybody only visiting for a few days (which days)?
+- Does anybody have a birthday between Thanksgiving and Christmas? Do they get a present behind that day's door?
 - Which dog, if any, runs closest to them?
 Then ask: "Is there anyone missing?" Do not ask about ages.
 

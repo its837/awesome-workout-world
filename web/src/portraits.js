@@ -56,7 +56,9 @@ export function lookOf(profile) {
     face: L.face || 'oval',                                       // round | oval | long | square
     height, k: height / BASE_HEIGHT,
     build: L.build || 'medium', b: BUILDS[L.build] || 1,
-    hat: L.hat || 'santa',                                        // santa | beanie | cap | none
+    hat: L.hat || 'santa',                                        // santa | beanie | cap | sauna | wizard | none
+    shirtless: !!L.shirtless,                                     // no shirt: the body is skin
+    babySled: !!L.babySled,                                       // a baby in a little red sled on their back
     hatCol: colour(L.hatCol, {}, profile.jacket || C.red),
     capMark: L.capMark || '',                                     // a cap's letter: 'B'
     markCol: colour(L.markCol, {}, C.red),
@@ -93,7 +95,7 @@ function drawHuman(p, k, jacket) {
     if (k.curly) for (let i = 0; i < 7; i++) for (const sd of [-1, 1]) p.ell(0.5 + sd * (fx + 0.1), 0.3 + i * (fall + 0.2) / 6, 0.055, 0.055, i % 2 ? hair : hairD);
   }
   if (st === 'pony') { p.ell(0.78, 0.52, 0.1, 0.24, hair); p.rect(0.71, 0.3, 0.08, 0.1, C.red); }
-  p.ell(0.5, 1.06, 0.44, 0.34, jacket);
+  p.ell(0.5, 1.06, 0.44, 0.34, k.shirtless ? skinD : jacket);
   p.rect(0.43, 0.64, 0.14, 0.16, skinD);
   if (!fall) { p.rect(0.5 - fx - 0.03, 0.44, 0.05, 0.1, skinD); p.rect(0.5 + fx - 0.02, 0.44, 0.05, 0.1, skinD); }
   if (k.face === 'square') p.rect(0.5 - fx + 0.02, 0.5, 2 * fx - 0.04, 0.2, skin);
@@ -274,6 +276,32 @@ export function drawPortrait(ctx, profile, x, y, size = 36) {
       ctx.fillStyle = rgb(L.markCol || C.red);
       ['11 ', '1 1', '11 ', '1 1', '11 '].forEach((row, j) => [...row].forEach((ch, i) => { if (ch === '1') ctx.fillRect(mx + i * u, my + j * u, u, u); }));
     }
+    return;
+  }
+  if (kind === 'wizard') {
+    // a wizard hat: a tall indigo cone with a bent tip, a gold band and a wide brim
+    const col = '#3a3084', colD = '#282060', gold = '#fad650';
+    const w = Math.round(size * 0.66), bx = Math.round(x + size * 0.17), rows = Math.max(8, Math.round(size * 0.5)), by = Math.round(y - size * 0.34);
+    for (let r = 0; r < rows; r++) {
+      const ww = Math.max(2, Math.round(w * (0.18 + 0.82 * (r / rows)))), lean = Math.round((1 - r / rows) * size * 0.07);
+      ctx.fillStyle = col; ctx.fillRect(bx + Math.round((w - ww) / 2) + lean, by + r, ww, 1);
+    }
+    ctx.fillStyle = col; ctx.fillRect(bx + Math.round(w * 0.55), by - 1, Math.max(3, Math.round(size * 0.17)), Math.max(2, Math.round(size * 0.07)));      // the bent tip
+    ctx.fillStyle = colD; ctx.fillRect(bx + Math.round(w * 0.2), by + Math.round(rows * 0.45), Math.max(1, Math.round(size * 0.05)), Math.round(rows * 0.5));
+    ctx.fillStyle = gold; ctx.fillRect(bx, by + rows - 2, w, Math.max(2, Math.round(size * 0.06)));
+    ctx.fillRect(bx + Math.round(w * 0.52), by + Math.round(rows * 0.4), Math.max(1, Math.round(size / 24)), Math.max(1, Math.round(size / 24)));
+    ctx.fillStyle = colD; ctx.fillRect(bx - 4, by + rows - 2 + Math.max(2, Math.round(size * 0.06)), w + 8, Math.max(2, Math.round(size * 0.07)));          // the brim
+    return;
+  }
+  if (kind === 'sauna') {
+    // a felt sauna hat: a soft cone with a limp tip and a turned-up brim
+    const felt = [226, 212, 176], foldC = [190, 172, 132], rgb = (c) => `rgb(${c[0]},${c[1]},${c[2]})`;
+    const w = Math.round(size * 0.7), bx = Math.round(x + size * 0.15), by = Math.round(y - size * 0.2), rows = Math.max(6, Math.round(size * 0.32));
+    ctx.fillStyle = rgb(felt);
+    for (let r = 0; r < rows; r++) { const ww = Math.round(w * (0.34 + 0.66 * (r / rows))); ctx.fillRect(bx + Math.round((w - ww) / 2) + Math.round((rows - r) * 0.04 * size / 10), by + r, ww, 1); }
+    ctx.fillRect(bx + Math.round(w * 0.52), by - 2, Math.max(2, Math.round(size * 0.1)), 3);             // the limp tip, flopped over
+    ctx.fillStyle = rgb(foldC);
+    ctx.fillRect(bx - 2, by + rows, w + 4, Math.max(3, Math.round(size * 0.09)));                         // the brim
     return;
   }
   if (kind === 'beanie') {

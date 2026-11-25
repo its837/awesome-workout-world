@@ -1,12 +1,12 @@
 {
  "name": "merry-miles",
  "version": "0.11.0",
- "build": 1795095961,
+ "build": 1795568864,
  "files": [
   {
    "path": "family.js",
-   "sha256": "2c9aff7ac6cb5557e6c1eaa89e2e6caed277bc3630745adbf774d5aa53552728",
-   "size": 1948
+   "sha256": "e7b60bf9654664844f7fd090a85bd7965800da4624a9a4c2fddbaf63707705c6",
+   "size": 2501
   },
   {
    "path": "index.html",
@@ -15,8 +15,8 @@
   },
   {
    "path": "profiles.js",
-   "sha256": "4432c98de861ca478b3f5a0ff58bda7078d1d8f7f1a61af88789a9e0fef659bb",
-   "size": 4342
+   "sha256": "4fb40c960c1e7c61e76f0acb5e707d5e2140ecfe017347caa97ba2a1cbd63b08",
+   "size": 4660
   },
   {
    "path": "src/advent.js",
@@ -30,8 +30,8 @@
   },
   {
    "path": "src/audio.js",
-   "sha256": "ef746e7baba4b3706333e7bef26fed22ec58830904d05a8c80997ad0f07065b6",
-   "size": 43314
+   "sha256": "fb391ec83a450c8fdc54c50ceb92c9aa50427efada3cc35efc80aa89dcf49cad",
+   "size": 43282
   },
   {
    "path": "src/bench.js",
@@ -45,8 +45,8 @@
   },
   {
    "path": "src/camp.js",
-   "sha256": "cdd8a393e813441722422c62cda8190295afc44dec7575a054cbfa2d0abf5693",
-   "size": 18936
+   "sha256": "b43857ec88984315ad240364523f96bef281d59e832b54ce807328f5ba34d7d9",
+   "size": 22244
   },
   {
    "path": "src/carols.js",
@@ -80,8 +80,8 @@
   },
   {
    "path": "src/door.js",
-   "sha256": "92db28024494785955e23a6a79b65756b2fd5aa6a017326c0c7ac114e7dd7d6e",
-   "size": 18724
+   "sha256": "f25aa131f797d04d238b67fe1648a85e48ec511dfc7a3b9b957d5341ea5a23bf",
+   "size": 18792
   },
   {
    "path": "src/edward.js",
@@ -95,8 +95,8 @@
   },
   {
    "path": "src/figure.js",
-   "sha256": "94d18b839cb7d173f11387b5f9b2824ef240d69f584cba04378f37af9b9ff515",
-   "size": 27390
+   "sha256": "ed544b354837fd04bd5bc5950988ec40f1c0f3c692f4411933d4be064e530ef6",
+   "size": 34589
   },
   {
    "path": "src/font.js",
@@ -105,18 +105,18 @@
   },
   {
    "path": "src/gifts.js",
-   "sha256": "97cfea072ea69b148aded5d3c18338b5cdda04dd61cd2dd9eb3ff74c98704065",
-   "size": 30545
+   "sha256": "e15f0d65761a79e756ecd99f986a47591aebe83216732ceda15c9274de8427a9",
+   "size": 33189
   },
   {
    "path": "src/home.js",
-   "sha256": "9cc23e88f33621b199ce340894c3b225252b09627d4aa69a9c9b97cbc4ab855c",
-   "size": 26270
+   "sha256": "a1be646f5f0f8df479b6898a88f700ec79d7fdfdb2eebef28a21850467d24b56",
+   "size": 27038
   },
   {
    "path": "src/launcher.js",
-   "sha256": "637fa513aec4ab8b2cfdd926c022f41bafe19f3904941a6ddeb3eaf226b9bb9a",
-   "size": 14657
+   "sha256": "3dbb577a9288116fb11dce513bc1b12e8c7954af13f37712ad54b3b0051aea2d",
+   "size": 15108
   },
   {
    "path": "src/machine.js",
@@ -125,8 +125,8 @@
   },
   {
    "path": "src/main.js",
-   "sha256": "6fc80cb38d6ef13eface1121eeaa3db335bb52d17384406b06bcaff964072e22",
-   "size": 22130
+   "sha256": "acdc0bebe61dc86a8a2e3b48d428c36b4b4a2aa97a79f9dc24d5b37c6114e3ff",
+   "size": 22043
   },
   {
    "path": "src/mapscreen.js",
@@ -145,13 +145,13 @@
   },
   {
    "path": "src/portraits.js",
-   "sha256": "be1df02de255676eaeb3253adf636f8ca931b09c150736e6c2e8a58430fe7e8b",
-   "size": 15552
+   "sha256": "a92a0d847025e14baeaafef86e966c54722cb60207930d03903b4359846ffc5f",
+   "size": 18027
   },
   {
    "path": "src/relative.js",
-   "sha256": "abd798131bce949b4ee1e3ce1d685532bba5ec52bf1b6bf7576dde597f7d18d6",
-   "size": 12383
+   "sha256": "4106b030d94a00eac152808d79aa2e770dfe4367897b77e8ee9d2cb80ca582b9",
+   "size": 12869
   },
   {
    "path": "src/retro.js",
@@ -160,33 +160,33 @@
   },
   {
    "path": "src/rewards.js",
-   "sha256": "e2dfe28b0d88cfd448a5a2fc0ac6cba07d497a2ba89aa4f73550b63150adfe9a",
-   "size": 27053
+   "sha256": "8881f6ab0c2737e1853e78aca37cac9ff5fbb9e6e35f1e6004c75c7f44f00c0a",
+   "size": 27445
   },
   {
    "path": "src/ride.js",
-   "sha256": "944b5d205b666391ff7d0621b3cc139ce2fdf652c42df76df5208aaa5940ff21",
-   "size": 84111
+   "sha256": "1db723393071a993b420fce803fc969c0a9461a2ca8e9f4407139c19c9a88976",
+   "size": 84302
   },
   {
    "path": "src/rider.js",
-   "sha256": "52bae238689744e20cb8e724f1a7e06108451261099ecd8936504b8713e9d07b",
-   "size": 18500
+   "sha256": "2ef80f57f19bb073f6149bbd88e6604ca17b84d10c8f102b0143853dc868019c",
+   "size": 20651
   },
   {
    "path": "src/santa.js",
-   "sha256": "f1f8bc49d5ed885a8d34de66fb6c8730f442c4b53b421b09357b1160cd700f0e",
-   "size": 7526
+   "sha256": "4949b005cb8e029f3b81227538934a1ae64eb72d0caee8e777afb36e5c9e2a13",
+   "size": 7424
   },
   {
    "path": "src/session.js",
-   "sha256": "e3f08be3d49afb5ca82394a7069c2b3aed8f3d55551aafe7d7d282f134bbb68e",
-   "size": 9460
+   "sha256": "9a172b0f647897ec1266e52940458fe387139cb498615b8416221120713bcf1e",
+   "size": 9799
   },
   {
    "path": "src/settings.js",
-   "sha256": "7845b2631a7680f55e2c3b870a7ff8714b86e0594b6b538edb242d3ef02c7417",
-   "size": 4463
+   "sha256": "ed6feb2139f956cb5613096cf698fc008a77529e16b7cb98d7ad03bd4a5cf685",
+   "size": 4743
   },
   {
    "path": "src/sky.js",
@@ -210,8 +210,8 @@
   },
   {
    "path": "src/text.js",
-   "sha256": "2574428ab72cf7e0193636cc198fcc80f70d714be83c82601e7d68e890a00be5",
-   "size": 3344
+   "sha256": "a77f9e552340a6826db0e86f498e6e7d57a7786c6131496cb69c104ade5a7999",
+   "size": 3334
   },
   {
    "path": "src/tools.js",
@@ -245,8 +245,8 @@
   },
   {
    "path": "src/world.js",
-   "sha256": "4b63d71584341580aea8b565213b5b65e4d72827c6ce29aa9624b6ef9358a32e",
-   "size": 30312
+   "sha256": "94be7b3ee1129bd25591b3a2bcd30c4e7706cd0745e94e3791623c21f9e8fdf5",
+   "size": 30291
   },
   {
    "path": "styles.css",
@@ -255,8 +255,8 @@
   },
   {
    "path": "tweaks.js",
-   "sha256": "201e4b626fb77f2358375b66fb283f963b02b83195af1a6afe23bc3f8151a34b",
-   "size": 520
+   "sha256": "b2d40bdf252205c056d0e4968521c051deb698fc820381bf5f424b6157f33cdf",
+   "size": 466
   }
  ]
 }

@@ -166,9 +166,15 @@ tools/android.sh sync-key clipboard
 
 It **reads** it. On a treadmill it asks Peloton's sensor service two questions, "what is
 the belt speed" and "what is the incline", and cannot ask anything else: there is no code
-in it that can start, stop, speed up, lock or unlock a belt. It only talks to a version of
-that service whose numbering somebody has checked (`TreadReader.kt`); with any other
-version it asks nothing and runs on pretend speed. The bike reader is not written yet.
+in it that can start, stop, speed up, lock or unlock a belt. On an original Bike it asks to
+be told the bike's numbers (cadence, resistance, power) and can ask for nothing else.
+
+It only talks to a version of that service whose numbering somebody has read for themselves
+(`TreadReader.kt`, `BikeReader.kt`); with any other version it asks nothing and the game
+runs on pretend numbers. **Peloton updates that service by itself.** If the home page says
+"(SIMULATOR)" under the machine's name, that is what has happened: see "When Peloton
+updates its sensor service" in [BIKE_AND_TREADMILL.md](BIKE_AND_TREADMILL.md). A Bike+ or a
+Tread+ has no reader yet and always shows the simulator.
 
 ## What never to do
 
